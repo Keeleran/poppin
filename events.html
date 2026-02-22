@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POPPIN — Events</title>
     <meta name="description"
-        content="Find and RSVP to events at bars across Staten Island. DJ nights, comedy shows, tastings, live music and more.">
+        content="Find and RSVP to events at bars across NYC. DJ nights, comedy shows, tastings, live music and more.">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -20,8 +20,9 @@
                 <button class="btn btn-gold" onclick="document.getElementById('createModal').style.display='flex'">+
                     Create Event</button>
             </div>
-            <p style="color:var(--text-secondary);margin-bottom:var(--space-xl)">DJ nights, live music, tastings, watch
-                parties, and more across Staten Island.</p>
+            <p id="eventsSubheader" style="color:var(--text-secondary);margin-bottom:var(--space-xl)">DJ nights, live
+                music, tastings, watch
+                parties, and more across NYC.</p>
 
             <!-- Filters -->
             <div class="filter-bar">
@@ -134,6 +135,8 @@
         }
 
         renderEvents(POPPIN.getActiveEvents());
+        document.getElementById('eventsSubheader').textContent =
+            `DJ nights, live music, tastings, watch parties, and more across ${POPPIN.getBoroughName()}.`;
     </script>
     <script src="js/protect.js"></script>
 </body>
