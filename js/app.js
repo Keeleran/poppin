@@ -47,9 +47,37 @@ function renderNavbar(activePage) {
             💬
             <span class="dm-badge" style="display:${dmUnread > 0 ? 'flex' : 'none'}">${dmUnread}</span>
           </a>
-          <span class="nav-notification" onclick="showToast('No new notifications')">
-            🔔 <span class="badge">3</span>
-          </span>
+          <div class="nav-notification-wrapper">
+            <span class="nav-notification" onclick="toggleNotifications(event)">
+              🔔 <span class="badge">3</span>
+            </span>
+            <div class="notification-dropdown" id="notificationDropdown" style="display:none;">
+              <div class="notif-header">Notifications</div>
+              <div class="notif-list">
+                <div class="notif-item unread">
+                  <div class="notif-icon">🔥</div>
+                  <div class="notif-content">
+                    <p><strong>Kettle Black</strong> is popping right now! 50+ check-ins in the last hour.</p>
+                    <span>10m ago</span>
+                  </div>
+                </div>
+                <div class="notif-item unread">
+                  <div class="notif-icon">🎟️</div>
+                  <div class="notif-content">
+                    <p>Your RSVP for <strong>UFC 300 Watch Party</strong> is confirmed.</p>
+                    <span>2h ago</span>
+                  </div>
+                </div>
+                <div class="notif-item unread">
+                  <div class="notif-icon">⭐</div>
+                  <div class="notif-content">
+                    <p>You earned the <strong>Night Owl</strong> badge!</p>
+                    <span>Yesterday</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <a href="profile.html" class="nav-avatar" title="${user.displayName}">${user.avatar}</a>
           <button class="btn btn-ghost btn-sm" onclick="POPPIN.logout()" title="Sign Out">✕</button>
         </div>
@@ -62,6 +90,23 @@ function renderNavbar(activePage) {
 function toggleNav() {
   document.getElementById('navLinks').classList.toggle('open');
 }
+
+function toggleNotifications(e) {
+  e.stopPropagation();
+  const dropdown = document.getElementById('notificationDropdown');
+  if (dropdown) {
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+document.addEventListener('click', (e) => {
+  const dropdown = document.getElementById('notificationDropdown');
+  if (dropdown && dropdown.style.display === 'block') {
+    if (!e.target.closest('.nav-notification-wrapper')) {
+      dropdown.style.display = 'none';
+    }
+  }
+});
 
 /* ---------- Footer ---------- */
 function renderFooter() {
