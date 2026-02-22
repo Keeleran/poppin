@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POPPIN — Events</title>
     <meta name="theme-color" content="#1A0A2E">
@@ -120,6 +122,10 @@
 
         function createEvent(e) {
             e.preventDefault();
+            if (!POPPIN.RateLimit('createEvent', 5, 60)) {
+                showToast('You can only create up to 5 events per hour.');
+                return;
+            }
             const bar = POPPIN.getBar(parseInt(document.getElementById('evtBar').value));
             const dateVal = document.getElementById('evtDate').value;
             const d = new Date(dateVal);

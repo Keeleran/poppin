@@ -43,6 +43,38 @@ const POPPIN = {
         'Cobra': 'e4c6a2d8f1b5e9c3a7d0f2b6e8a1c4d7'
     },
 
+    /* ---------- Security & Session Management ---------- */
+    Storage: {
+        set(key, value) {
+            const item = { data: value, timestamp: new Date().getTime() };
+            try { localStorage.setItem(key, JSON.stringify(item)); } catch (e) { console.warn('Storage disabled'); }
+        },
+        get(key, maxAgeHours = 12) {
+            try {
+                const str = localStorage.getItem(key);
+                if (!str) return null;
+                const item = JSON.parse(str);
+                const now = new Date().getTime();
+                if (now - item.timestamp > maxAgeHours * 60 * 60 * 1000) {
+                    localStorage.removeItem(key);
+                    return null; // Expired
+                }
+                return item.data;
+            } catch (e) { return null; }
+        },
+        remove(key) { localStorage.removeItem(key); }
+    },
+    RateLimit: function (action, maxAttempts, timeWindowMinutes) {
+        const key = `rl_${action}`;
+        const history = this.Storage.get(key, 24) || [];
+        const now = new Date().getTime();
+        const validHistory = history.filter(time => now - time < timeWindowMinutes * 60 * 1000);
+        if (validHistory.length >= maxAttempts) return false;
+        validHistory.push(now);
+        this.Storage.set(key, validHistory);
+        return true;
+    },
+
     /* ---------- NYC Bars — All 5 Boroughs ---------- */
     bars: [
         /* ===== MANHATTAN ===== */
@@ -971,18 +1003,18 @@ const POPPIN = {
     },
 
     getCurrentUser() {
-        const stored = localStorage.getItem('poppin_user');
-        return stored ? JSON.parse(stored) : null;
+        // Enforces a 12-hour session timeout for security
+        return this.Storage.get('poppin_user', 12);
     },
 
     login(user) {
         const safeUser = { ...user };
         delete safeUser.password;
-        localStorage.setItem('poppin_user', JSON.stringify(safeUser));
+        this.Storage.set('poppin_user', safeUser);
     },
 
     logout() {
-        localStorage.removeItem('poppin_user');
+        this.Storage.remove('poppin_user');
         window.location.href = 'index.html';
     },
 

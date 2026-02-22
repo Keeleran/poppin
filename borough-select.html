@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POPPIN — Choose Your Borough</title>
     <meta name="theme-color" content="#1A0A2E">
@@ -105,7 +106,7 @@
     <main class="page-content" style="min-height: 85vh; display: flex; flex-direction: column; padding-bottom: 5vh;">
         <div class="container" style="flex: 1;">
             <div class="onboarding-header">
-                <div class="logo">POP<span>PIN</span></div>
+                <img src="img/poppin-logo.svg" alt="POPPIN Logo" class="brand-logo-main">
                 <h1 style="font-size: 3rem; margin-bottom: var(--space-md);">Where are you poppin' off to?</h1>
                 <p style="color: var(--text-secondary); font-size: 1.2rem;">Select your primary borough to explore
                     real-time nightlife.</p>

@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POPPIN — See What's Poppin. NYC Nightlife, Live.</title>
     <meta name="theme-color" content="#1A0A2E">
@@ -33,7 +35,7 @@
             <div class="floating-orb orb-2"></div>
             <div class="floating-orb orb-3"></div>
 
-            <div class="logo">POPPIN</div>
+            <img src="img/poppin-logo.svg" alt="POPPIN Logo" class="brand-logo-main">
             <p class="tagline">See What's Poppin.<br>NYC Nightlife, Live.</p>
 
             <div class="features-preview">
@@ -61,6 +63,7 @@
                     <p class="subtitle">Sign in to see what's poppin tonight</p>
 
                     <form onsubmit="handleLogin(event)">
+                        <input type="hidden" name="csrfToken" class="csrfToken">
                         <div class="form-group">
                             <label class="form-label" for="loginUser">Username</label>
                             <input type="text" id="loginUser" class="form-input" placeholder="Enter your username"
@@ -92,6 +95,7 @@
                     <p class="subtitle">Unlock NYC nightlife in real time</p>
 
                     <form onsubmit="handleRegister(event)">
+                        <input type="hidden" name="csrfToken" class="csrfToken">
                         <div class="form-group">
                             <label class="form-label" for="regUser">Choose a Username</label>
                             <input type="text" id="regUser" class="form-input" placeholder="Your username" required>
@@ -139,6 +143,13 @@
 
     <script src="js/data.js"></script>
     <script>
+        function generateCSRFToken() {
+            const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            sessionStorage.setItem('poppin_csrf', token);
+            document.querySelectorAll('.csrfToken').forEach(el => el.value = token);
+        }
+        document.addEventListener('DOMContentLoaded', generateCSRFToken);
+
         // Redirect if already logged in
         const existingUser = localStorage.getItem('poppin_user');
         if (existingUser) window.location.href = 'dashboard.html';
@@ -160,6 +171,11 @@
 
         function handleLogin(e) {
             e.preventDefault();
+            const token = e.target.querySelector('input[name="csrfToken"]').value;
+            if (token !== sessionStorage.getItem('poppin_csrf')) {
+                alert('Security Error: CSRF Token Validation Failed.');
+                return;
+            }
             const username = document.getElementById('loginUser').value;
             const password = document.getElementById('loginPass').value;
             const user = POPPIN.authenticate(username, password);
@@ -176,6 +192,11 @@
 
         function handleRegister(e) {
             e.preventDefault();
+            const token = e.target.querySelector('input[name="csrfToken"]').value;
+            if (token !== sessionStorage.getItem('poppin_csrf')) {
+                alert('Security Error: CSRF Token Validation Failed.');
+                return;
+            }
             const username = document.getElementById('regUser').value;
             const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value : '';
             const newUser = {

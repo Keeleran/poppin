@@ -81,8 +81,8 @@ function renderNavbar(activePage) {
     <nav class="navbar" role="navigation" aria-label="Main navigation">
       <div class="container">
         <a href="dashboard.html" class="nav-brand">
-          <div class="nav-brand-icon">P</div>
-          <span class="nav-brand-text">POPPIN</span>
+          <img src="favicon.svg" class="nav-brand-icon-img" alt="P">
+          <img src="img/poppin-logo.svg" class="nav-brand-text-img" alt="POPPIN">
         </a>
         <div class="borough-selector" onclick="toggleBoroughs(event)" role="button" aria-haspopup="true" aria-expanded="false" tabindex="0">
           📍 ${POPPIN.NYC_BOROUGHS.find(b => b.id === POPPIN.getActiveBorough())?.name || 'Manhattan'} ▾
@@ -233,7 +233,7 @@ function renderFooter() {
     <footer class="site-footer" role="contentinfo">
       <div class="footer-inner">
         <div class="footer-brand">
-          <div class="logo">POPPIN</div>
+          <img src="img/poppin-logo.svg" class="footer-brand-logo" alt="POPPIN Logo">
           <p>${sanitize(POPPIN.getBoroughName())}'s live nightlife platform. See who's out. Vote the vibes. Own the night.</p>
           <a href="https://garnetgrid.com" target="_blank" rel="noopener" class="garnetgrid-badge" title="Built by GarnetGrid">
             ${GARNET_GEM_SVG}
@@ -360,6 +360,10 @@ function switchChatTab(btn) {
 }
 
 function sendChatMsg(barId) {
+  if (!POPPIN.RateLimit('chat', 15, 1)) {
+    showToast('Slow down, chat is moving too fast. 🛑');
+    return;
+  }
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if (!text) return;
@@ -390,6 +394,10 @@ function loadChatHistory(barId) {
 }
 
 function postNewComment(barId) {
+  if (!POPPIN.RateLimit('comment', 5, 2)) {
+    showToast('Take a breath! You are commenting too fast.');
+    return;
+  }
   const input = document.getElementById('commentInput');
   const text = input.value.trim();
   if (!text) return;
@@ -476,6 +484,10 @@ function voteBar(barId, btn) {
     showToast('You already voted for this bar tonight!');
     return;
   }
+  if (!POPPIN.RateLimit('vote', 10, 5)) {
+    showToast('You are voting too fast! Chill out for a bit.');
+    return;
+  }
   btn.classList.add('voted');
   btn.disabled = true;
   markBarVoted(barId);
@@ -487,6 +499,15 @@ function voteBar(barId, btn) {
 
 /* ---------- RSVP ---------- */
 function rsvpEvent(eventId, btn) {
+  if (!POPPIN.requireAuth()) return;
+  if (btn.classList.contains('btn-gold')) {
+    showToast('You already RSVP\\'d to this event!');
+    return;
+  }
+  if (!POPPIN.RateLimit('rsvp', 10, 5)) {
+    showToast('Too many RSVPs! Save some fun for later.');
+    return;
+  }
   btn.textContent = '✓ Going';
   btn.classList.remove('btn-outline');
   btn.classList.add('btn-gold');

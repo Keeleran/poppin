@@ -237,29 +237,16 @@ h4 {
     text-decoration: none;
 }
 
-.nav-brand-icon {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, var(--purple-primary), var(--gold-primary));
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: #fff;
-    font-family: var(--font-display);
+.nav-brand-icon-img {
+    height: 32px;
+    width: auto;
+    filter: drop-shadow(0 0 8px rgba(199, 125, 255, 0.4));
 }
 
-.nav-brand-text {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 1.4rem;
-    letter-spacing: 0.04em;
-    background: linear-gradient(135deg, var(--text-primary), var(--gold-primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.nav-brand-text-img {
+    height: 24px;
+    width: auto;
+    transform: translateY(2px);
 }
 
 .nav-links {
@@ -1274,18 +1261,13 @@ h4 {
     transform: translate(-50%, -50%);
 }
 
-.login-brand .logo {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: 4rem;
-    letter-spacing: 0.05em;
-    background: linear-gradient(135deg, var(--text-primary), var(--gold-primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.brand-logo-main {
+    height: 80px;
+    width: auto;
     position: relative;
     z-index: 1;
     margin-bottom: var(--space-md);
+    filter: drop-shadow(0 0 10px rgba(199, 125, 255, 0.3));
 }
 
 .login-brand .tagline {
@@ -2121,13 +2103,12 @@ h4 {
     gap: var(--space-md);
 }
 
-.footer-brand .logo {
-    font-family: var(--font-display);
-    font-weight: 900;
-    font-size: 1.6rem;
-    background: linear-gradient(135deg, var(--text-primary), var(--gold-primary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.footer-brand-logo {
+    height: 36px;
+    width: auto;
+    margin-bottom: var(--space-sm);
+    filter: drop-shadow(0 0 10px rgba(199, 125, 255, 0.3));
+
     background-clip: text;
 }
 
