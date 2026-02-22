@@ -1,8 +1,17 @@
 /* ============================================
-   POPPIN — Core Application JS  v2.0
+   POPPIN — Core Application JS  v2.1
    Shared UI logic across all pages
    With GarnetGrid badge, legal footer, DM nav
+   XSS-safe · Accessible · Vote-persistent
    ============================================ */
+
+/* ---------- XSS Sanitizer ---------- */
+function sanitize(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
 
 /* ---------- Feed Image Map ---------- */
 const BAR_FEED_IMAGES = {
@@ -38,6 +47,25 @@ POPPIN.getBoroughName = function () {
   return b ? b.name : 'NYC';
 };
 
+/* ---------- Vote Persistence ---------- */
+function getVotedBars() {
+  try {
+    return JSON.parse(localStorage.getItem('poppin_voted_bars') || '[]');
+  } catch { return []; }
+}
+
+function markBarVoted(barId) {
+  const voted = getVotedBars();
+  if (!voted.includes(barId)) {
+    voted.push(barId);
+    localStorage.setItem('poppin_voted_bars', JSON.stringify(voted));
+  }
+}
+
+function hasVotedFor(barId) {
+  return getVotedBars().includes(barId);
+}
+
 /* ---------- GarnetGrid Gem SVG ---------- */
 const GARNET_GEM_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14" style="width:14px;height:14px;min-width:14px"><defs><linearGradient id="gf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9b1b30"/><stop offset="100%" stop-color="#d4374a"/></linearGradient><linearGradient id="gf2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e63946"/><stop offset="100%" stop-color="#7a1525"/></linearGradient><linearGradient id="gf3" x1="50%" y1="0%" x2="50%" y2="100%"><stop offset="0%" stop-color="#ff6b6b"/><stop offset="100%" stop-color="#c0392b"/></linearGradient></defs><style>@keyframes facet-shimmer{0%,100%{opacity:0}15%{opacity:.9}30%{opacity:0}}@keyframes gem-rotate{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(3deg) scale(1.02)}75%{transform:rotate(-3deg) scale(1.02)}}@keyframes sparkle-pop{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1)}}.gem-body{transform-origin:12px 12px;animation:gem-rotate 4s ease-in-out infinite}.shimmer-1{animation:facet-shimmer 3s ease-in-out infinite}.shimmer-2{animation:facet-shimmer 3s ease-in-out infinite;animation-delay:1s}.shimmer-3{animation:facet-shimmer 3s ease-in-out infinite;animation-delay:2s}.sparkle{transform-origin:center;animation:sparkle-pop 2.5s ease-in-out infinite}.sparkle:nth-child(2){animation-delay:.8s}.sparkle:nth-child(3){animation-delay:1.6s}</style><g class="gem-body"><polygon points="12,22 4,10 20,10" fill="url(#gf1)"/><polygon points="4,10 8,3 12,6 12,10" fill="url(#gf2)"/><polygon points="20,10 16,3 12,6 12,10" fill="url(#gf3)"/><polygon points="8,3 12,1.5 16,3 12,6" fill="#e63946"/><polygon points="4,10 12,10 12,22" fill="url(#gf2)" opacity=".7"/><polygon points="20,10 12,10 12,22" fill="url(#gf1)" opacity=".8"/><polygon class="shimmer-1" points="4,10 12,10 12,22" fill="white" opacity="0"/><polygon class="shimmer-2" points="20,10 12,10 12,22" fill="white" opacity="0"/><polygon class="shimmer-3" points="8,3 12,1.5 16,3 12,6" fill="white" opacity="0"/></g><g><circle class="sparkle" cx="3" cy="5" r=".8" fill="white" opacity="0"/><circle class="sparkle" cx="21" cy="4" r=".6" fill="white" opacity="0"/><circle class="sparkle" cx="22" cy="16" r=".7" fill="white" opacity="0"/></g></svg>`;
 
@@ -49,56 +77,57 @@ function renderNavbar(activePage) {
   const dmUnread = typeof PoppinChat !== 'undefined' ? PoppinChat.unreadDMs : 0;
 
   return `
-    <nav class="navbar">
+    <a href="#main-content" class="skip-to-content">Skip to content</a>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
       <div class="container">
         <a href="dashboard.html" class="nav-brand">
           <div class="nav-brand-icon">P</div>
           <span class="nav-brand-text">POPPIN</span>
         </a>
-        <div class="borough-selector" onclick="toggleBoroughs(event)">
+        <div class="borough-selector" onclick="toggleBoroughs(event)" role="button" aria-haspopup="true" aria-expanded="false" tabindex="0">
           📍 ${POPPIN.NYC_BOROUGHS.find(b => b.id === POPPIN.getActiveBorough())?.name || 'Manhattan'} ▾
-          <div class="borough-dropdown" id="boroughDropdown" style="display:none;">
+          <div class="borough-dropdown" id="boroughDropdown" style="display:none;" role="listbox">
             ${POPPIN.NYC_BOROUGHS.map(b => `
-              <div class="borough-item ${b.id === POPPIN.getActiveBorough() ? 'active' : ''}" onclick="POPPIN.setActiveBorough('${b.id}')">
+              <div class="borough-item ${b.id === POPPIN.getActiveBorough() ? 'active' : ''}" role="option" aria-selected="${b.id === POPPIN.getActiveBorough()}" onclick="POPPIN.setActiveBorough('${b.id}')">
                 ${b.name}
               </div>
             `).join('')}
           </div>
         </div>
-        <div class="nav-links" id="navLinks">
-          <a href="dashboard.html" class="${activePage === 'dashboard' ? 'active' : ''}">Tonight</a>
-          <a href="events.html" class="${activePage === 'events' ? 'active' : ''}">Events</a>
-          <a href="leaderboard.html" class="${activePage === 'leaderboard' ? 'active' : ''}">Rankings</a>
-          <a href="pricing.html" class="${activePage === 'pricing' ? 'active' : ''}">Membership</a>
+        <div class="nav-links" id="navLinks" role="menubar">
+          <a href="dashboard.html" class="${activePage === 'dashboard' ? 'active' : ''}" role="menuitem">Tonight</a>
+          <a href="events.html" class="${activePage === 'events' ? 'active' : ''}" role="menuitem">Events</a>
+          <a href="leaderboard.html" class="${activePage === 'leaderboard' ? 'active' : ''}" role="menuitem">Rankings</a>
+          <a href="pricing.html" class="${activePage === 'pricing' ? 'active' : ''}" role="menuitem">Membership</a>
         </div>
         <div class="nav-user">
-          <a href="inbox.html" class="nav-dm-link" title="Messages">
+          <a href="inbox.html" class="nav-dm-link" title="Messages" aria-label="Messages${dmUnread > 0 ? `, ${dmUnread} unread` : ''}">
             💬
-            <span class="dm-badge" style="display:${dmUnread > 0 ? 'flex' : 'none'}">${dmUnread}</span>
+            <span class="dm-badge" style="display:${dmUnread > 0 ? 'flex' : 'none'}" aria-hidden="true">${dmUnread}</span>
           </a>
           <div class="nav-notification-wrapper">
-            <span class="nav-notification" onclick="toggleNotifications(event)">
-              🔔 <span class="badge">3</span>
+            <span class="nav-notification" onclick="toggleNotifications(event)" role="button" aria-haspopup="true" aria-expanded="false" aria-label="Notifications, 3 new" tabindex="0">
+              🔔 <span class="badge" aria-hidden="true">3</span>
             </span>
-            <div class="notification-dropdown" id="notificationDropdown" style="display:none;">
+            <div class="notification-dropdown" id="notificationDropdown" style="display:none;" role="menu">
               <div class="notif-header">Notifications</div>
               <div class="notif-list">
                 <div class="notif-item unread">
-                  <div class="notif-icon">🔥</div>
+                  <div class="notif-icon" aria-hidden="true">🔥</div>
                   <div class="notif-content">
                     <p><strong>Kettle Black</strong> is popping right now! 50+ check-ins in the last hour.</p>
                     <span>10m ago</span>
                   </div>
                 </div>
                 <div class="notif-item unread">
-                  <div class="notif-icon">🎟️</div>
+                  <div class="notif-icon" aria-hidden="true">🎟️</div>
                   <div class="notif-content">
                     <p>Your RSVP for <strong>UFC 300 Watch Party</strong> is confirmed.</p>
                     <span>2h ago</span>
                   </div>
                 </div>
                 <div class="notif-item unread">
-                  <div class="notif-icon">⭐</div>
+                  <div class="notif-icon" aria-hidden="true">⭐</div>
                   <div class="notif-content">
                     <p>You earned the <strong>Night Owl</strong> badge!</p>
                     <span>Yesterday</span>
@@ -107,10 +136,10 @@ function renderNavbar(activePage) {
               </div>
             </div>
           </div>
-          <a href="profile.html" class="nav-avatar" title="${user.displayName}">${user.avatar}</a>
-          <button class="btn btn-ghost btn-sm" onclick="POPPIN.logout()" title="Sign Out">✕</button>
+          <a href="profile.html" class="nav-avatar" title="${sanitize(user.displayName)}">${sanitize(user.avatar)}</a>
+          <button class="btn btn-ghost btn-sm" onclick="POPPIN.logout()" title="Sign Out" aria-label="Sign out">✕</button>
         </div>
-          <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
+          <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation" aria-expanded="false">☰</button>
         </div>
       </div>
       <div class="nav-backdrop" id="navBackdrop" onclick="closeNav()"></div>
@@ -129,7 +158,10 @@ function toggleNav() {
   } else {
     navLinks.classList.add('open');
     if (backdrop) backdrop.classList.add('show');
-    if (navToggle) navToggle.textContent = '✕';
+    if (navToggle) {
+      navToggle.textContent = '✕';
+      navToggle.setAttribute('aria-expanded', 'true');
+    }
     document.body.style.overflow = 'hidden';
 
     // Close nav when any link is clicked
@@ -146,23 +178,32 @@ function closeNav() {
 
   if (navLinks) navLinks.classList.remove('open');
   if (backdrop) backdrop.classList.remove('show');
-  if (navToggle) navToggle.textContent = '☰';
+  if (navToggle) {
+    navToggle.textContent = '☰';
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
   document.body.style.overflow = '';
 }
 
 function toggleNotifications(e) {
   e.stopPropagation();
   const dropdown = document.getElementById('notificationDropdown');
+  const trigger = e.target.closest('.nav-notification');
   if (dropdown) {
-    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    const showing = dropdown.style.display === 'none';
+    dropdown.style.display = showing ? 'block' : 'none';
+    if (trigger) trigger.setAttribute('aria-expanded', showing ? 'true' : 'false');
   }
 }
 
 function toggleBoroughs(e) {
   e.stopPropagation();
   const dropdown = document.getElementById('boroughDropdown');
+  const trigger = e.target.closest('.borough-selector');
   if (dropdown) {
-    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    const showing = dropdown.style.display === 'none';
+    dropdown.style.display = showing ? 'block' : 'none';
+    if (trigger) trigger.setAttribute('aria-expanded', showing ? 'true' : 'false');
   }
 }
 
@@ -171,6 +212,8 @@ document.addEventListener('click', (e) => {
   if (notifDropdown && notifDropdown.style.display === 'block') {
     if (!e.target.closest('.nav-notification-wrapper')) {
       notifDropdown.style.display = 'none';
+      const trigger = document.querySelector('.nav-notification');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
     }
   }
 
@@ -178,6 +221,8 @@ document.addEventListener('click', (e) => {
   if (boroughDropdown && boroughDropdown.style.display === 'block') {
     if (!e.target.closest('.borough-selector')) {
       boroughDropdown.style.display = 'none';
+      const trigger = document.querySelector('.borough-selector');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
     }
   }
 });
@@ -185,11 +230,11 @@ document.addEventListener('click', (e) => {
 /* ---------- Footer ---------- */
 function renderFooter() {
   return `
-    <footer class="site-footer">
+    <footer class="site-footer" role="contentinfo">
       <div class="footer-inner">
         <div class="footer-brand">
           <div class="logo">POPPIN</div>
-          <p>${POPPIN.getBoroughName()}'s live nightlife platform. See who's out. Vote the vibes. Own the night.</p>
+          <p>${sanitize(POPPIN.getBoroughName())}'s live nightlife platform. See who's out. Vote the vibes. Own the night.</p>
           <a href="https://garnetgrid.com" target="_blank" rel="noopener" class="garnetgrid-badge" title="Built by GarnetGrid">
             ${GARNET_GEM_SVG}
             GarnetGrid
@@ -228,28 +273,30 @@ function renderBarCard(bar) {
   const crowdBars = Array.from({ length: 5 }, (_, i) => {
     const active = i < bar.crowdLevel;
     const high = bar.crowdLevel >= 4 && active;
-    return `<div class="bar ${active ? 'active' : ''} ${high ? 'high' : ''}"></div>`;
+    return `<div class="bar ${active ? 'active' : ''} ${high ? 'high' : ''}" aria-hidden="true"></div>`;
   }).join('');
 
+  const crowdLabel = ['Empty', 'Quiet', 'Moderate', 'Busy', 'Packed'][bar.crowdLevel - 1] || 'Unknown';
   const feedImg = getBarFeedImage(bar);
+  const voted = hasVotedFor(bar.id);
 
   return `
-    <div class="card bar-card" onclick="window.location.href='bar.html?id=${bar.id}'">
+    <div class="card bar-card" onclick="window.location.href='bar.html?id=${bar.id}'" role="link" tabindex="0" aria-label="${sanitize(bar.name)} — ${crowdLabel}, rated ${bar.ratingTonight}">
       <div class="camera-feed">
-        <img src="${feedImg}" alt="${bar.name} — Live Feed" loading="lazy">
+        <img src="${feedImg}" alt="${sanitize(bar.name)} — Live Feed" loading="lazy">
         <div class="live-badge"><span class="dot"></span> LIVE</div>
-        <span class="vibe-tag vibe-${bar.vibe}">${bar.vibeEmoji} ${bar.vibeLabel}</span>
+        <span class="vibe-tag vibe-${bar.vibe}">${bar.vibeEmoji} ${sanitize(bar.vibeLabel)}</span>
       </div>
       <div class="card-body">
-        <div class="bar-name">${bar.name}</div>
-        <div class="bar-neighborhood">📍 ${bar.neighborhood}</div>
+        <div class="bar-name">${sanitize(bar.name)}</div>
+        <div class="bar-neighborhood">📍 ${sanitize(bar.neighborhood)}</div>
         <div class="bar-meta">
-          <div class="crowd-meter">
+          <div class="crowd-meter" aria-label="Crowd level: ${crowdLabel}">
             <div class="bars">${crowdBars}</div>
             <span>${bar.checkedIn} here</span>
           </div>
-          <div class="rating-badge">⭐ ${bar.ratingTonight}</div>
-          <button class="vote-btn" onclick="event.stopPropagation(); voteBar(${bar.id}, this)">
+          <div class="rating-badge" aria-label="Rating: ${bar.ratingTonight} out of 5">⭐ ${bar.ratingTonight}</div>
+          <button class="vote-btn ${voted ? 'voted' : ''}" onclick="event.stopPropagation(); voteBar(${bar.id}, this)" ${voted ? 'disabled' : ''} aria-label="Vote for ${sanitize(bar.name)}, ${bar.votesTonight} votes">
             🔥 ${bar.votesTonight}
           </button>
         </div>
@@ -262,13 +309,13 @@ function renderBarCard(bar) {
 function renderComment(c) {
   return `
     <div class="comment">
-      <div class="comment-avatar">${c.avatar}</div>
+      <div class="comment-avatar" aria-hidden="true">${sanitize(c.avatar)}</div>
       <div class="comment-body">
         <div class="comment-header">
-          <span class="comment-user">${c.user}</span>
-          <span class="comment-time">${c.time}</span>
+          <span class="comment-user">${sanitize(c.user)}</span>
+          <span class="comment-time">${sanitize(c.time)}</span>
         </div>
-        <div class="comment-text">${c.text}</div>
+        <div class="comment-text">${sanitize(c.text)}</div>
       </div>
     </div>
   `;
@@ -278,22 +325,22 @@ function renderComment(c) {
 function renderChatPanel(barId) {
   return `
     <div class="chat-panel">
-      <div class="chat-tabs">
-        <button class="chat-tab active" data-panel="live-chat" onclick="switchChatTab(this)">💬 Live Chat</button>
-        <button class="chat-tab" data-panel="comments" onclick="switchChatTab(this)">📝 Comments</button>
+      <div class="chat-tabs" role="tablist">
+        <button class="chat-tab active" data-panel="live-chat" onclick="switchChatTab(this)" role="tab" aria-selected="true">💬 Live Chat</button>
+        <button class="chat-tab" data-panel="comments" onclick="switchChatTab(this)" role="tab" aria-selected="false">📝 Comments</button>
       </div>
-      <div id="liveChatPanel">
-        <div class="chat-messages" id="chatMessages"></div>
+      <div id="liveChatPanel" role="tabpanel">
+        <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
         <div class="chat-input-row">
-          <input type="text" id="chatInput" placeholder="Say something..." autocomplete="off">
-          <button onclick="sendChatMsg(${barId})">Send</button>
+          <input type="text" id="chatInput" placeholder="Say something..." autocomplete="off" aria-label="Chat message">
+          <button onclick="sendChatMsg(${barId})" aria-label="Send chat message">Send</button>
         </div>
       </div>
-      <div id="commentsPanel" style="display:none">
+      <div id="commentsPanel" style="display:none" role="tabpanel">
         <div style="padding:var(--space-md);max-height:300px;overflow-y:auto" id="commentsList"></div>
         <div class="chat-input-row">
-          <input type="text" id="commentInput" placeholder="Add a comment..." autocomplete="off">
-          <button onclick="postNewComment(${barId})">Post</button>
+          <input type="text" id="commentInput" placeholder="Add a comment..." autocomplete="off" aria-label="Comment text">
+          <button onclick="postNewComment(${barId})" aria-label="Post comment">Post</button>
         </div>
       </div>
     </div>
@@ -301,8 +348,12 @@ function renderChatPanel(barId) {
 }
 
 function switchChatTab(btn) {
-  document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.chat-tab').forEach(t => {
+    t.classList.remove('active');
+    t.setAttribute('aria-selected', 'false');
+  });
   btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
   const panel = btn.dataset.panel;
   document.getElementById('liveChatPanel').style.display = panel === 'live-chat' ? 'block' : 'none';
   document.getElementById('commentsPanel').style.display = panel === 'comments' ? 'block' : 'none';
@@ -327,7 +378,7 @@ function appendChatBubble(msg) {
   const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const div = document.createElement('div');
   div.className = 'chat-msg';
-  div.innerHTML = `<span class="chat-user">${msg.user}:</span><span class="chat-text">${msg.text}</span><span class="chat-timestamp">${time}</span>`;
+  div.innerHTML = `<span class="chat-user">${sanitize(msg.user)}:</span><span class="chat-text">${sanitize(msg.text)}</span><span class="chat-timestamp">${time}</span>`;
   container.appendChild(div);
 }
 
@@ -357,26 +408,26 @@ function refreshCommentsList(barId) {
 /* ---------- Event Card ---------- */
 function renderEventCard(ev) {
   const bar = POPPIN.getBar(ev.barId);
-  const attendeeHTML = ev.attendees.slice(0, 4).map(a => `<div class="att">${a}</div>`).join('');
+  const attendeeHTML = ev.attendees.slice(0, 4).map(a => `<div class="att" aria-hidden="true">${sanitize(a)}</div>`).join('');
   const extra = ev.rsvps - ev.attendees.length;
 
   return `
     <div class="event-card">
-      <div class="event-date-box">
-        <span class="month">${ev.month}</span>
-        <span class="day">${ev.day}</span>
+      <div class="event-date-box" aria-label="${sanitize(ev.month)} ${sanitize(ev.day)}">
+        <span class="month">${sanitize(ev.month)}</span>
+        <span class="day">${sanitize(ev.day)}</span>
       </div>
       <div class="event-info">
-        <div class="event-title">${ev.title}</div>
-        <div class="event-bar">📍 ${ev.barName}</div>
-        <div class="event-desc">${ev.description}</div>
+        <div class="event-title">${sanitize(ev.title)}</div>
+        <div class="event-bar">📍 ${sanitize(ev.barName)}</div>
+        <div class="event-desc">${sanitize(ev.description)}</div>
         <div class="event-meta">
           <div class="event-rsvp">
             <div class="attendee-stack">${attendeeHTML}</div>
             <span>${ev.rsvps} going</span>
           </div>
-          <span style="font-size:0.72rem; color:var(--text-muted)">${ev.time}</span>
-          <button class="btn btn-sm btn-outline" onclick="rsvpEvent(${ev.id}, this)">RSVP</button>
+          <span style="font-size:0.72rem; color:var(--text-muted)">${sanitize(ev.time)}</span>
+          <button class="btn btn-sm btn-outline" onclick="rsvpEvent(${ev.id}, this)" aria-label="RSVP to ${sanitize(ev.title)}">RSVP</button>
         </div>
       </div>
     </div>
@@ -389,13 +440,13 @@ function renderRankRow(bar, index) {
   return `
     <div class="rank-row">
       <div class="rank-number">${index + 1}</div>
-      <img src="${feedImg}" alt="${bar.name}" class="rank-thumb" loading="lazy">
+      <img src="${feedImg}" alt="${sanitize(bar.name)}" class="rank-thumb" loading="lazy">
       <div class="rank-info">
-        <div class="rank-bar-name">${bar.name}</div>
-        <div class="rank-neighborhood">${bar.neighborhood}</div>
+        <div class="rank-bar-name">${sanitize(bar.name)}</div>
+        <div class="rank-neighborhood">${sanitize(bar.neighborhood)}</div>
       </div>
       <div style="text-align:center;">
-        <div class="rating-badge">⭐ ${bar.ratingTonight}</div>
+        <div class="rating-badge" aria-label="Rating: ${bar.ratingTonight}">⭐ ${bar.ratingTonight}</div>
         <div style="font-size:0.65rem;color:var(--text-muted);margin-top:2px">${bar.votesTonight} votes</div>
       </div>
       <div class="rank-score">🔥 ${bar.votesTonight}</div>
@@ -410,6 +461,8 @@ function showToast(message) {
     toast = document.createElement('div');
     toast.id = 'toast';
     toast.className = 'toast';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
     document.body.appendChild(toast);
   }
   toast.textContent = message;
@@ -419,15 +472,17 @@ function showToast(message) {
 
 /* ---------- Vote ---------- */
 function voteBar(barId, btn) {
-  if (btn.classList.contains('voted')) {
+  if (hasVotedFor(barId) || btn.classList.contains('voted')) {
     showToast('You already voted for this bar tonight!');
     return;
   }
   btn.classList.add('voted');
+  btn.disabled = true;
+  markBarVoted(barId);
   const bar = POPPIN.getBar(barId);
   if (bar) bar.votesTonight++;
   btn.innerHTML = `🔥 ${bar.votesTonight}`;
-  showToast(`Voted for ${bar.name}! 🔥`);
+  showToast(`Voted for ${sanitize(bar.name)}! 🔥`);
 }
 
 /* ---------- RSVP ---------- */
@@ -443,11 +498,23 @@ function rsvpEvent(eventId, btn) {
 function initPage(pageName) {
   if (!POPPIN.requireAuth()) return;
 
+  /* Add main content landmark */
+  const mainEl = document.querySelector('main');
+  if (mainEl && !mainEl.id) mainEl.id = 'main-content';
+
   const navEl = document.getElementById('mainNav') || document.getElementById('nav-root');
   if (navEl) navEl.outerHTML = renderNavbar(pageName);
 
   const footerEl = document.getElementById('siteFooter') || document.getElementById('footer-root');
   if (footerEl) footerEl.outerHTML = renderFooter();
+
+  /* Add preconnect for Unsplash images */
+  if (!document.querySelector('link[href*="images.unsplash.com"]')) {
+    const preconnect = document.createElement('link');
+    preconnect.rel = 'preconnect';
+    preconnect.href = 'https://images.unsplash.com';
+    document.head.appendChild(preconnect);
+  }
 }
 
 /* Auto-init: detect page from URL */

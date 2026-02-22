@@ -16,6 +16,10 @@
     <meta name="twitter:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
     <meta name="description"
         content="Find and RSVP to events at bars across NYC. DJ nights, comedy shows, tastings, live music and more.">
+    <meta property="og:title" content="POPPIN — Events">
+    <meta property="og:url" content="https://poppin.garnetgrid.com/events.html">
+    <link rel="canonical" href="https://poppin.garnetgrid.com/events.html">
+    <link rel="preconnect" href="https://images.unsplash.com">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -127,6 +131,7 @@
                 title: document.getElementById('evtName').value,
                 barId: bar.id,
                 barName: bar.name,
+                borough: bar.borough || POPPIN.getActiveBorough(),
                 date: dateVal,
                 month: months[d.getMonth()],
                 day: String(d.getDate()),
@@ -138,7 +143,10 @@
             };
 
             POPPIN.events.unshift(newEvent);
-            renderEvents(POPPIN.events);
+            /* Reset filter to All and render active borough events */
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.filter-btn').classList.add('active');
+            renderEvents(POPPIN.getActiveEvents());
             document.getElementById('createModal').style.display = 'none';
             showToast('Event created! 🎉');
         }

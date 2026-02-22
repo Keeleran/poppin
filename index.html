@@ -19,7 +19,8 @@
     <meta property="og:title" content="POPPIN — NYC Nightlife, Live">
     <meta property="og:description"
         content="See what's happening at every bar across the 5 boroughs. Live feeds, comments, voting, and events.">
-    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://poppin.garnetgrid.com/">
+    <meta property="og:url" content="https://poppin.garnetgrid.com/">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -36,7 +37,7 @@
             <p class="tagline">See What's Poppin.<br>NYC Nightlife, Live.</p>
 
             <div class="features-preview">
-                <div class="feature-item"><span class="icon">📹</span> Live camera feeds from 75+ NYC bars</div>
+                <div class="feature-item"><span class="icon">📹</span> Live camera feeds from 40+ NYC bars</div>
                 <div class="feature-item"><span class="icon">💬</span> Real-time comments with timestamps</div>
                 <div class="feature-item"><span class="icon">🔥</span> Vote for tonight's hottest spot</div>
                 <div class="feature-item"><span class="icon">🎉</span> Organize & RSVP to events across the boroughs
@@ -176,8 +177,10 @@
         function handleRegister(e) {
             e.preventDefault();
             const username = document.getElementById('regUser').value;
+            const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value : '';
             const newUser = {
                 username: username,
+                email: email,
                 displayName: username,
                 role: 'member',
                 avatar: username.charAt(0).toUpperCase(),

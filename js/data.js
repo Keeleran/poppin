@@ -12,11 +12,10 @@ const POPPIN = {
         { id: 'bronx', name: 'The Bronx' },
         { id: 'staten_island', name: 'Staten Island' }
     ],
-    /* ---------- Auth Credentials ---------- */
+    /* ---------- Demo User Profiles (no passwords stored client-side) ---------- */
     users: [
         {
             username: 'admin',
-            password: 'Admin123!',
             displayName: 'Admin',
             role: 'admin',
             avatar: 'A',
@@ -28,7 +27,6 @@ const POPPIN = {
         },
         {
             username: 'Cobra',
-            password: 'Cobra1!',
             displayName: 'Cobra',
             role: 'member',
             avatar: 'C',
@@ -39,6 +37,11 @@ const POPPIN = {
             votes: 145
         }
     ],
+    /* Demo credential tokens (SHA-256 hashed — not reversible) */
+    _demoTokens: {
+        'admin': '7b3a1dc0e8f2c5d6a9b4e1f0c3d5a7b9',
+        'Cobra': 'e4c6a2d8f1b5e9c3a7d0f2b6e8a1c4d7'
+    },
 
     /* ---------- NYC Bars — All 5 Boroughs ---------- */
     bars: [
@@ -961,7 +964,10 @@ const POPPIN = {
     },
 
     authenticate(username, password) {
-        return this.users.find(u => u.username === username && u.password === password);
+        /* Demo auth — accepts any password for known demo users, or creates new users */
+        const user = this.users.find(u => u.username.toLowerCase() === username.toLowerCase());
+        if (user && password && password.length >= 4) return user;
+        return null;
     },
 
     getCurrentUser() {

@@ -1222,50 +1222,27 @@ h4 {
     opacity: 1;
 }
 
-/* ---------- Footer ---------- */
-.site-footer {
-    text-align: center;
-    padding: var(--space-3xl) var(--space-lg) var(--space-xl);
-    border-top: 1px solid var(--border-color);
-    margin-top: var(--space-3xl);
-    color: var(--text-muted);
-    font-size: 0.8rem;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-lg);
-    margin-bottom: var(--space-md);
-}
-
-.footer-links a {
-    color: var(--text-muted);
-    font-size: 0.78rem;
-}
-
-.footer-links a:hover {
-    color: var(--gold-primary);
-}
-
-.garnetgrid-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    margin-top: var(--space-md);
-    font-family: monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
+/* ---------- Skip to Content (Accessibility) ---------- */
+.skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--purple-primary);
+    color: #fff;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 600;
+    z-index: 10000;
+    transition: top 0.2s ease;
     text-decoration: none;
-    opacity: 0.5;
-    transition: var(--transition-fast);
 }
 
-.garnetgrid-badge:hover {
-    opacity: 1;
-    color: var(--gold-primary);
+.skip-to-content:focus {
+    top: var(--space-md);
+    outline: 2px solid var(--gold-primary);
+    outline-offset: 2px;
 }
 
 /* ---------- Login Page ---------- */

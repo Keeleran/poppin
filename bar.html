@@ -5,15 +5,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POPPIN — Bar Detail</title>
-    <meta name="theme-color" content="#1A0A2E">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="POPPIN">
-    <meta property="og:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
+  <meta name="theme-color" content="#1A0A2E">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="POPPIN">
+  <meta property="og:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
+  <meta name="description"
+    content="Live crowd levels, ratings, chat, and events at this bar. See what's poppin right now.">
+  <meta property="og:title" content="POPPIN — Bar Detail">
+  <meta property="og:url" content="https://poppin.garnetgrid.com/bar.html">
+  <link rel="canonical" href="https://poppin.garnetgrid.com/bar.html">
+  <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="stylesheet" href="css/style.css">
   <style>
     .bar-detail-hero {
@@ -223,7 +229,7 @@
     if (typeof PoppinChat !== 'undefined') {
       loadChatHistory(barId);
       refreshCommentsList(barId);
-      PoppinChat.startSimulatedChat(barId);
+      PoppinChat.startBotActivity(barId);
     }
 
     function checkIn() {
