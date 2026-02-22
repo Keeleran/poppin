@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POPPIN — Choose Your Borough</title>
     <meta name="theme-color" content="#1A0A2E">
@@ -121,6 +122,7 @@
     <div id="footer-root"></div>
 
     <script src="js/data.js"></script>
+    <script src="js/membership.js"></script>
     <script src="js/app.js"></script>
     <script>
         // Render footer with GarnetGrid badge
@@ -128,18 +130,31 @@
         if (footerEl) footerEl.outerHTML = renderFooter();
 
         const boroughData = [
-            { id: 'manhattan', name: 'Manhattan', desc: 'The City That Never Sleeps', emoji: '🏙️' },
-            { id: 'brooklyn', name: 'Brooklyn', desc: 'Vibes, Breweries & Warehouses', emoji: '🌉' },
-            { id: 'queens', name: 'Queens', desc: "The World's Borough", emoji: '👑' },
-            { id: 'bronx', name: 'The Bronx', desc: 'Birthplace of Hip Hop', emoji: '🗽' },
-            { id: 'staten_island', name: 'Staten Island', desc: 'The Forgotten Borough', emoji: '⛴️' }
+            { id: 'manhattan', name: 'Manhattan', desc: 'The City That Never Sleeps', emoji: '🏙️', heat: 5, heatLabel: '🔥 On Fire', barsOpen: 142 },
+            { id: 'brooklyn', name: 'Brooklyn', desc: 'Vibes, Breweries & Warehouses', emoji: '🌉', heat: 4, heatLabel: '♨️ Poppin\'', barsOpen: 89 },
+            { id: 'queens', name: 'Queens', desc: "The World's Borough", emoji: '👑', heat: 3, heatLabel: '🟢 Active', barsOpen: 45 },
+            { id: 'bronx', name: 'The Bronx', desc: 'Birthplace of Hip Hop', emoji: '🗽', heat: 2, heatLabel: '🟡 Quiet', barsOpen: 12 },
+            { id: 'staten_island', name: 'Staten Island', desc: 'The Forgotten Borough', emoji: '⛴️', heat: 3, heatLabel: '🟢 Active', barsOpen: 28 }
         ];
+
+        function getHeatColor(heat) {
+            if (heat >= 5) return 'var(--danger)';
+            if (heat === 4) return 'var(--gold-primary)';
+            if (heat === 3) return 'var(--success)';
+            return 'var(--text-muted)';
+        }
 
         document.getElementById('boroughGrid').innerHTML = boroughData.map(b => `
             <div class="borough-card" onclick="selectBorough('${b.id}')">
                 <div class="emoji-bg">${b.emoji}</div>
+                <div style="position:absolute; top:15px; right:15px; background:rgba(0,0,0,0.6); padding:6px 12px; border-radius:12px; font-size:0.75rem; font-weight:800; border:1px solid ${getHeatColor(b.heat)}; color:${getHeatColor(b.heat)}; box-shadow:0 0 10px ${getHeatColor(b.heat)}60; backdrop-filter:blur(4px);">
+                    ${b.heatLabel}
+                </div>
                 <h3>${b.name}</h3>
                 <p>${b.desc}</p>
+                <div style="margin-top:var(--space-md); font-size:0.8rem; color:var(--accent-primary); font-weight:bold;">
+                    ${b.barsOpen} Bars Live
+                </div>
             </div>
         `).join('');
 

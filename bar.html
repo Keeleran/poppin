@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POPPIN — Bar Detail</title>
   <meta name="theme-color" content="#1A0A2E">
@@ -113,6 +114,7 @@
   <div id="footer-root"></div>
 
   <script src="js/data.js"></script>
+  <script src="js/membership.js"></script>
   <script src="js/chat.js"></script>
   <script src="js/app.js"></script>
   <script>
@@ -174,6 +176,7 @@
             <!-- Quick Actions -->
             <div class="info-block" style="text-align:center">
               <button class="btn btn-gold btn-block btn-lg checkin-btn" id="checkinBtn" onclick="checkIn()">📍 I'm Here</button>
+              <button class="btn btn-outline btn-block" style="margin-top: 8px; border-color: var(--accent-primary); color: var(--accent-primary);" onclick="viewWhosHere(${bar.id})">👀 See Who's Here</button>
               <div style="margin-top:var(--space-md); display:flex; gap:var(--space-sm); justify-content:center;">
                 <button class="vote-btn" onclick="voteBar(${bar.id}, this)">🔥 Vote · ${bar.votesTonight}</button>
               </div>
@@ -201,13 +204,26 @@
               <h4>📍 Details</h4>
               <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:var(--space-sm)">${bar.address}</p>
               <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:var(--space-sm)">🕐 ${bar.hours}</p>
-              <p style="font-size:0.82rem;color:var(--text-secondary)">${bar.description}</p>
+              <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:var(--space-md)">${bar.description}</p>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <div style="font-size:0.82rem;color:var(--text-secondary)"><strong>Age Vibe:</strong> <span style="color:var(--text-primary)">${bar.ageVibe || 'Mixed'}</span></div>
+                <div style="font-size:0.82rem;color:var(--text-secondary)"><strong>Dress Code:</strong> <span style="color:var(--text-primary)" style="text-transform:capitalize">${bar.dressCode || 'Casual'}</span></div>
+                <div style="font-size:0.82rem;color:var(--text-secondary)"><strong>Music:</strong> <span style="color:var(--text-primary)" style="text-transform:capitalize">${bar.musicGenre || 'Mixed'}</span></div>
+              </div>
             </div>
 
             <!-- Specials -->
             <div class="info-block">
-              <h4>🍸 Tonight's Specials</h4>
-              <p style="font-size:0.82rem;color:var(--text-secondary)">${bar.specials}</p>
+              <h4>🍸 Tonight's Specials & Menu</h4>
+              <p style="font-size:0.82rem;color:var(--gold-primary);margin-bottom:var(--space-sm)"><strong>Happy Hour:</strong> ${bar.happyHour || 'Check with bartender'}</p>
+              <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:var(--space-md)">${bar.specials}</p>
+              ${bar.drinksMenu && bar.drinksMenu.length > 0 ? `
+                <h5 style="font-size:0.8rem; margin-bottom:8px; color:var(--text-primary);">Signature Drinks</h5>
+                <ul style="padding-left:16px; margin:0; font-size:0.82rem; color:var(--text-secondary); margin-bottom: 12px;">
+                  ${bar.drinksMenu.map(d => `<li style="margin-bottom:4px;">${d}</li>`).join('')}
+                </ul>
+              ` : ''}
+              <button class="btn btn-outline btn-block" id="redeemBtn" onclick="redeemDrink('${bar.name.replace(/'/g, "\\'")}')" style="margin-top: 8px;">🎟️ Redeem Drink (-1 Token)</button>
             </div>
 
             <!-- Events Here -->
@@ -241,6 +257,24 @@
       btn.classList.add('btn-primary');
       btn.disabled = true;
       showToast(`Checked in at ${bar.name}! 📍`);
+    }
+
+    function redeemDrink(barName) {
+      Membership.requireToken(() => {
+        Membership.logRedemption(barId, 'Signature Cocktail');
+        const btn = document.getElementById('redeemBtn');
+        btn.textContent = '✓ Drink Redeemed';
+        btn.classList.add('btn-primary');
+        btn.classList.remove('btn-outline');
+        btn.disabled = true;
+        showToast(`Redeemed one signature cocktail at ${barName}! 🍸`);
+      });
+    }
+
+    function viewWhosHere(barId) {
+      Membership.requireFeature('whoIsHere', () => {
+        window.location.href = `whos-here.html?id=${barId}`;
+      });
     }
   </script>
   <script src="js/protect.js"></script>

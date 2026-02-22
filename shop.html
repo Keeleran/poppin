@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Merch Shop</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+    <!-- Brand Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Security: CSP -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
+
+    <style>
+        .shop-hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.1), transparent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .shop-hero h1 {
+            font-size: 3rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .shop-hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .product-card {
+            background: var(--surface-1);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(57, 255, 20, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .product-details {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-badge {
+            background: var(--accent-primary);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            align-self: flex-start;
+            text-transform: uppercase;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--highlight);
+            margin-bottom: 1rem;
+        }
+
+        .product-actions {
+            margin-top: auto;
+        }
+
+        /* Mockup specific styles */
+        .mockup-img-1 {
+            background: url('https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=600') center/cover;
+        }
+
+        .mockup-img-2 {
+            background: url('https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600') center/cover;
+        }
+
+        .mockup-img-3 {
+            background: url('https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&q=80&w=600') center/cover;
+        }
+
+        .mockup-img-4 {
+            background: url('https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&q=80&w=600') center/cover;
+        }
+
+        .vip-discount-banner {
+            background: rgba(138, 43, 226, 0.15);
+            border: 1px solid var(--accent-secondary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .vip-discount-banner span {
+            color: var(--accent-secondary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="nav-root"></div>
+
+    <main class="page-content">
+        <section class="shop-hero">
+            <div class="container">
+                <h1>The Official Shop</h1>
+                <p>Cop the look. Represent the vibe.</p>
+            </div>
+        </section>
+
+        <div class="container">
+
+            <div class="vip-discount-banner">
+                <span>👑 VIP MEMBERS GET 20% OFF ALL MERCHANDISE</span>
+                <button class="btn btn-outline"
+                    style="border-color: var(--accent-secondary); color: var(--accent-secondary);"
+                    onclick="Membership.showTokenUpsellModal('VIP Merch Discount')">Upgrade Now</button>
+            </div>
+
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image mockup-img-1"></div>
+                    <div class="product-details">
+                        <span class="product-badge">New Arrival</span>
+                        <h3 class="product-title">Classic Logo Tee - Midnight</h3>
+                        <div class="product-price">$35.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-block"
+                                onclick="alert('Shop checkout flow coming soon! 🛒')">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image mockup-img-2"></div>
+                    <div class="product-details">
+                        <span class="product-badge" style="background: var(--accent-secondary);">Limited Edition</span>
+                        <h3 class="product-title">"I Was There When It Hit 🔥" Hoodie</h3>
+                        <div class="product-price">$65.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-block"
+                                onclick="alert('Shop checkout flow coming soon! 🛒')">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image mockup-img-3"></div>
+                    <div class="product-details">
+                        <h3 class="product-title">POPPIN Dad Hat - Stealth</h3>
+                        <div class="product-price">$28.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-block"
+                                onclick="alert('Shop checkout flow coming soon! 🛒')">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image mockup-img-4"></div>
+                    <div class="product-details">
+                        <span class="product-badge">Best Seller</span>
+                        <h3 class="product-title">Neon Vibe Graphic Tee</h3>
+                        <div class="product-price">$40.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-primary btn-block"
+                                onclick="alert('Shop checkout flow coming soon! 🛒')">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/membership.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('shop');
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Who's Here</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+    <!-- Brand Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Security: CSP -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self' https://formspree.io; form-action 'self' https://formspree.io">
+
+    <style>
+        .tracker-header {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 3rem 1rem;
+            background: linear-gradient(45deg, rgba(155, 89, 182, 0.1), transparent);
+            border-radius: 1rem;
+            border: 1px solid rgba(155, 89, 182, 0.2);
+        }
+
+        .tracker-header h1 {
+            color: var(--gold-primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .tracker-header p {
+            color: var(--text-secondary);
+        }
+
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .who-card {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .who-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .who-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--surface-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin: 0 auto 0.75rem;
+            font-weight: bold;
+            border: 2px solid var(--accent-primary);
+            box-shadow: 0 4px 10px rgba(57, 255, 20, 0.2);
+        }
+
+        .who-card.vip .who-avatar {
+            border-color: var(--gold-primary);
+            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .who-name {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 600;
+        }
+
+        .who-status {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .vip-badge {
+            font-size: 0.65rem;
+            background: var(--gold-primary);
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 6px;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Nav -->
+    <nav class="navbar glass-panel">
+        <div class="logo-container">
+            <a href="borough-select.html" style="display:flex; align-items:center;">
+                <img src="assets/poppin-logo.svg" alt="POPPIN Logo" class="nav-logo-svg">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="events.html">Events</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="inbox.html" class="icon-link">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </a>
+            <a href="profile.html" class="avatar-link" id="navAvatar">A</a>
+        </div>
+    </nav>
+
+    <main class="container feature-fade-in" style="min-height: 80vh">
+        <div class="tracker-header">
+            <h1 id="barNameTitle">Who's Here</h1>
+            <p>Exclusive VIP view. <span id="checkinCount">0</span> people currently checked in.</p>
+            <div style="margin-top: 1rem;">
+                <a href="dashboard.html" id="backLink" class="btn btn-sm btn-outline"
+                    style="border-color: rgba(255,255,255,0.2); color: var(--text-secondary);">&larr; Back to Bar</a>
+            </div>
+        </div>
+
+        <div class="who-grid" id="whoGrid">
+            <!-- Grid populated by JS -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <img src="assets/poppin-logo.svg" alt="POPPIN Logo" class="footer-logo-svg">
+            <p class="tagline">NYC Nightlife, Live.</p>
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="pricing.html">Premium</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p class="copyright">© 2024 POPPIN. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="js/protect.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/membership.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = POPPIN.Storage.get('poppin_user', 24);
+            if (user) document.getElementById('navAvatar').textContent = user.avatar;
+
+            // Enforce VIP access for this page
+            Membership.requireFeature('whoIsHere', () => {
+                // Allowed! Initialize UI
+                initWhosHere();
+            }, () => {
+                // Denied! Redirect away
+                setTimeout(() => window.location.href = 'dashboard.html', 3000);
+            });
+
+            function initWhosHere() {
+                const params = new URLSearchParams(window.location.search);
+                const barId = parseInt(params.get('id'));
+                if (!barId) {
+                    document.getElementById('whoGrid').innerHTML = '<div class="empty-state">No bar specified.</div>';
+                    return;
+                }
+
+                const bar = POPPIN.getBar(barId);
+                if (!bar) {
+                    document.getElementById('whoGrid').innerHTML = '<div class="empty-state">Bar not found.</div>';
+                    return;
+                }
+
+                document.getElementById('barNameTitle').innerText = bar.name;
+                document.getElementById('checkinCount').innerText = bar.checkedIn;
+                document.getElementById('backLink').href = `bar.html?id=${bar.id}`;
+                document.title = `Who's Here at ${bar.name} — POPPIN`;
+
+                renderUsers(bar.checkedIn);
+            }
+
+            function renderUsers(count) {
+                const grid = document.getElementById('whoGrid');
+                if (count <= 0) {
+                    grid.innerHTML = '<div class="empty-state">No one has checked in yet. Be the first!</div>';
+                    return;
+                }
+
+                // Generate deterministic fake users based on count
+                const firstNames = ['Alex', 'Jordan', 'Taylor', 'Morgan', 'Casey', 'Riley', 'Jamie', 'Charlie', 'Avery', 'Harper', 'Evelyn', 'Rowan', 'Parker', 'Quinn', 'Sage', 'Emerson', 'Finley', 'River', 'Reese', 'Sloane'];
+                const timeStamps = ['Just now', '5m ago', '12m ago', '23m ago', '34m ago', '45m ago', '1h ago', '1h 15m ago', '1h 30m ago', '2h ago'];
+
+                let html = '';
+
+                // Show the current user at the top if they checked in (simulated by just always showing them first for VIPs)
+                if (user) {
+                    html += `
+                        <div class="who-card vip">
+                            <div class="who-avatar">${user.avatar}</div>
+                            <div class="who-name">${user.username}</div>
+                            <div class="who-status">Just now</div>
+                            <div class="vip-badge">VIP</div>
+                        </div>
+                    `;
+                    count = Math.max(0, count - 1); // Deduct self
+                }
+
+                // Generate others
+                // Max out at 40 visually so the page doesn't get crazy long
+                const renderCount = Math.min(count, 40);
+
+                for (let i = 0; i < renderCount; i++) {
+                    // Psuedo-random based on index to keep it stable per refresh
+                    const name = firstNames[(i * 7) % firstNames.length];
+                    const initial = name.charAt(0);
+                    const time = timeStamps[Math.floor((i / renderCount) * timeStamps.length)];
+                    const isVip = (i % 5 === 0); // 20% are VIPs
+
+                    html += `
+                        <div class="who-card ${isVip ? 'vip' : ''}">
+                            <div class="who-avatar">${initial}</div>
+                            <div class="who-name">${name.toLowerCase()}</div>
+                            <div class="who-status">${time}</div>
+                            ${isVip ? '<div class="vip-badge">VIP</div>' : ''}
+                        </div>
+                    `;
+                }
+
+                grid.innerHTML = html;
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POPPIN — Profile</title>
     <meta name="theme-color" content="#1A0A2E">
@@ -116,22 +117,25 @@
     <div id="footer-root"></div>
 
     <script src="js/data.js"></script>
+    <script src="js/membership.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/app.js"></script>
     <script>
         initPage('profile');
         const user = POPPIN.getCurrentUser();
 
-        // Profile Header
         document.getElementById('profileHeader').innerHTML = `
-      <div class="profile-header">
-        <div class="profile-avatar-large">${user.avatar}</div>
-        <div class="profile-info">
-          <div class="profile-name">${user.displayName}</div>
-          <span class="profile-tier-badge">👑 ${user.tier || 'Member'}</span>
-          <p style="font-size:0.82rem;color:var(--text-muted)">Member since ${user.joined || '2025'}</p>
+      <div class="profile-header" style="display:flex; flex-direction:column; align-items:center; gap:var(--space-md);">
+        <div style="display:flex; justify-content:center; align-items:center; gap:var(--space-lg); width:100%; max-width:500px">
+          <div class="profile-avatar-large">${user.avatar}</div>
+          <div class="profile-info" style="text-align:left;">
+            <div class="profile-name">${user.displayName}</div>
+            <span class="profile-tier-badge">👑 ${user.tier || 'Member'}</span>
+            <p style="font-size:0.82rem;color:var(--text-muted); margin-top:4px;">Member since ${user.joined || '2025'}</p>
+          </div>
         </div>
-        <div class="profile-stats">
+        
+        <div class="profile-stats" style="width:100%; max-width:500px; display:flex; justify-content:space-between; margin-top:0;">
           <div class="profile-stat">
             <div class="num">${user.checkins || 0}</div>
             <div class="label">Check-ins</div>
@@ -144,6 +148,22 @@
             <div class="num">${user.votes || 0}</div>
             <div class="label">Votes</div>
           </div>
+        </div>
+        
+        <div class="profile-badges" style="width:100%; max-width:500px; margin-top:var(--space-md); padding-top:var(--space-md); border-top:1px solid var(--border-color); display:flex; gap:var(--space-md); justify-content:center; flex-wrap:wrap;">
+            <div class="section-title" style="width:100%; text-align:center; font-size:0.9rem; margin-bottom:var(--space-sm); color:var(--text-muted);">Unlocked Badges</div>
+            <div class="badge-item" title="Night Owl: Voted after midnight" style="text-align:center; padding:10px; background:rgba(155,89,182,0.1); border-radius:12px; border:1px solid var(--purple-primary); min-width:80px;">
+                <div style="font-size:1.8rem; margin-bottom:4px; text-shadow:0 0 10px rgba(155,89,182,0.8);">🦉</div>
+                <div style="font-size:0.65rem; color:var(--gold-primary); font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">Night Owl</div>
+            </div>
+            <div class="badge-item" title="Trendsetter: First to vote on a packed bar" style="text-align:center; padding:10px; background:rgba(212,175,55,0.1); border-radius:12px; border:1px solid var(--gold-primary); min-width:80px;">
+                <div style="font-size:1.8rem; margin-bottom:4px; text-shadow:0 0 10px rgba(212,175,55,0.8);">🔥</div>
+                <div style="font-size:0.65rem; color:var(--gold-primary); font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">Trendsetter</div>
+            </div>
+            <div class="badge-item" title="Socialite: RSVP'd to 3+ events" style="text-align:center; padding:10px; background:rgba(0,255,128,0.1); border-radius:12px; border:1px solid #00FF80; min-width:80px;">
+                <div style="font-size:1.8rem; margin-bottom:4px; text-shadow:0 0 10px rgba(0,255,128,0.8);">💃</div>
+                <div style="font-size:0.65rem; color:#00FF80; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">Socialite</div>
+            </div>
         </div>
       </div>
     `;

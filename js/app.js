@@ -254,6 +254,11 @@ function renderFooter() {
           <a href="pricing.html">Upgrade</a>
         </div>
         <div class="footer-col">
+          <h4>Business</h4>
+          <a href="for-bars.html">For Bars (Owners)</a>
+          <a href="shop.html">POPPIN Shop</a>
+        </div>
+        <div class="footer-col">
           <h4>Legal</h4>
           <a href="privacy.html">Privacy Policy</a>
           <a href="terms.html">Terms of Service</a>
@@ -279,10 +284,14 @@ function renderBarCard(bar) {
   const crowdLabel = ['Empty', 'Quiet', 'Moderate', 'Busy', 'Packed'][bar.crowdLevel - 1] || 'Unknown';
   const feedImg = getBarFeedImage(bar);
   const voted = hasVotedFor(bar.id);
+  const promotedTag = bar.premiumListing ? `<div class="promoted-badge" style="position:absolute; top:8px; right:8px; background:var(--accent-primary); color:#000; font-size:0.7rem; font-weight:800; padding:4px 8px; border-radius:4px; z-index:5; text-transform:uppercase; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); border: 1px solid #000;">⭐ Promoted</div>` : '';
+  const viralTag = bar.isViral ? `<div class="viral-badge" style="position:absolute; top:${bar.premiumListing ? '36px' : '8px'}; right:8px; background:linear-gradient(45deg, #ff0055, #ff5500); color:#fff; font-size:0.7rem; font-weight:800; padding:4px 8px; border-radius:4px; z-index:5; text-transform:uppercase; box-shadow: 0 0 12px rgba(255, 85, 0, 0.8); border: 1px solid #fff;">🔥 Trending</div>` : '';
 
   return `
     <div class="card bar-card" onclick="window.location.href='bar.html?id=${bar.id}'" role="link" tabindex="0" aria-label="${sanitize(bar.name)} — ${crowdLabel}, rated ${bar.ratingTonight}">
-      <div class="camera-feed">
+      <div class="camera-feed" style="position:relative;">
+        ${promotedTag}
+        ${viralTag}
         <img src="${feedImg}" alt="${sanitize(bar.name)} — Live Feed" loading="lazy">
         <div class="live-badge"><span class="dot"></span> LIVE</div>
         <span class="vibe-tag vibe-${bar.vibe}">${bar.vibeEmoji} ${sanitize(bar.vibeLabel)}</span>
@@ -290,6 +299,9 @@ function renderBarCard(bar) {
       <div class="card-body">
         <div class="bar-name">${sanitize(bar.name)}</div>
         <div class="bar-neighborhood">📍 ${sanitize(bar.neighborhood)}</div>
+        <div class="bar-tags" style="display:flex;gap:4px;flex-wrap:wrap;margin:var(--space-sm) 0;">
+          ${(bar.tags || []).map(t => `<span style="font-size:0.65rem;background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;color:var(--text-secondary)">#${sanitize(t)}</span>`).join('')}
+        </div>
         <div class="bar-meta">
           <div class="crowd-meter" aria-label="Crowd level: ${crowdLabel}">
             <div class="bars">${crowdBars}</div>
@@ -501,7 +513,7 @@ function voteBar(barId, btn) {
 function rsvpEvent(eventId, btn) {
   if (!POPPIN.requireAuth()) return;
   if (btn.classList.contains('btn-gold')) {
-    showToast('You already RSVP\\'d to this event!');
+    showToast("You already RSVP'd to this event!");
     return;
   }
   if (!POPPIN.RateLimit('rsvp', 10, 5)) {
