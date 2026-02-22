@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — See What's Poppin. Staten Island Nightlife, Live.</title>
+    <meta name="description"
+        content="POPPIN is the membership-based platform for Staten Island nightlife. See what's poppin at bars across SI via live cameras, vote, comment, and organize events.">
+    <meta property="og:title" content="POPPIN — Staten Island Nightlife, Live">
+    <meta property="og:description"
+        content="See what's happening at every bar on Staten Island. Live feeds, comments, voting, and events.">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="login-page">
+        <!-- Left Brand Side -->
+        <div class="login-brand">
+            <div class="floating-orb orb-1"></div>
+            <div class="floating-orb orb-2"></div>
+            <div class="floating-orb orb-3"></div>
+
+            <div class="logo">POPPIN</div>
+            <p class="tagline">See What's Poppin.<br>Staten Island Nightlife, Live.</p>
+
+            <div class="features-preview">
+                <div class="feature-item"><span class="icon">📹</span> Live camera feeds from 15+ SI bars</div>
+                <div class="feature-item"><span class="icon">💬</span> Real-time comments with timestamps</div>
+                <div class="feature-item"><span class="icon">🔥</span> Vote for tonight's hottest spot</div>
+                <div class="feature-item"><span class="icon">🎉</span> Organize & RSVP to events</div>
+                <div class="feature-item"><span class="icon">🏆</span> Leaderboard rankings — who's #1?</div>
+            </div>
+        </div>
+
+        <!-- Right Auth Side -->
+        <div class="login-form-side">
+            <div class="login-form-container">
+
+                <div class="auth-toggle">
+                    <button class="active" id="loginTab" onclick="switchAuth('login')">Sign In</button>
+                    <button id="registerTab" onclick="switchAuth('register')">Join POPPIN</button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="loginForm">
+                    <h2>Welcome Back</h2>
+                    <p class="subtitle">Sign in to see what's poppin tonight</p>
+
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label class="form-label" for="loginUser">Username</label>
+                            <input type="text" id="loginUser" class="form-input" placeholder="Enter your username"
+                                required autocomplete="username">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="loginPass">Password</label>
+                            <div class="password-toggle">
+                                <input type="password" id="loginPass" class="form-input"
+                                    placeholder="Enter your password" required autocomplete="current-password">
+                                <button type="button" class="toggle-eye"
+                                    onclick="togglePassword('loginPass', this)">👁️</button>
+                            </div>
+                            <div class="form-error" id="loginError">Invalid username or password</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold btn-block btn-lg">Sign In</button>
+                    </form>
+
+                    <div class="form-footer">
+                        Don't have an account? <a href="#" onclick="switchAuth('register')">Join POPPIN</a>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" style="display:none">
+                    <h2>Join the Movement</h2>
+                    <p class="subtitle">Unlock Staten Island nightlife in real time</p>
+
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label class="form-label" for="regUser">Choose a Username</label>
+                            <input type="text" id="regUser" class="form-input" placeholder="Your username" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="regEmail">Email</label>
+                            <input type="email" id="regEmail" class="form-input" placeholder="name@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="regPass">Password</label>
+                            <div class="password-toggle">
+                                <input type="password" id="regPass" class="form-input"
+                                    placeholder="Create a strong password" required>
+                                <button type="button" class="toggle-eye"
+                                    onclick="togglePassword('regPass', this)">👁️</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="regAge">
+                                <input type="checkbox" id="regAge" required style="margin-right:6px">
+                                I am 21 or older
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold btn-block btn-lg">Create Account</button>
+                    </form>
+
+                    <div class="form-footer">
+                        Already a member? <a href="#" onclick="switchAuth('login')">Sign In</a>
+                    </div>
+                </div>
+
+                <div class="form-divider">Membership starts at $9.99/mo</div>
+
+                <div style="text-align:center; margin-top: var(--space-md);">
+                    <a href="pricing.html" style="font-size:0.78rem; color: var(--text-muted);">View membership tiers
+                        →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script>
+        // Redirect if already logged in
+        const existingUser = localStorage.getItem('poppin_user');
+        if (existingUser) window.location.href = 'dashboard.html';
+
+        function switchAuth(mode) {
+            const isLogin = mode === 'login';
+            document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = isLogin ? 'none' : 'block';
+            document.getElementById('loginTab').classList.toggle('active', isLogin);
+            document.getElementById('registerTab').classList.toggle('active', !isLogin);
+        }
+
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            btn.textContent = isPassword ? '🙈' : '👁️';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('loginUser').value;
+            const password = document.getElementById('loginPass').value;
+            const user = POPPIN.authenticate(username, password);
+
+            if (user) {
+                POPPIN.login(user);
+                window.location.href = 'dashboard.html';
+            } else {
+                document.getElementById('loginError').classList.add('show');
+                document.getElementById('loginPass').value = '';
+                setTimeout(() => document.getElementById('loginError').classList.remove('show'), 4000);
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUser').value;
+            const newUser = {
+                username: username,
+                displayName: username,
+                role: 'member',
+                avatar: username.charAt(0).toUpperCase(),
+                tier: 'Peek',
+                joined: new Date().toISOString().split('T')[0],
+                checkins: 0,
+                comments: 0,
+                votes: 0
+            };
+            POPPIN.login(newUser);
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>

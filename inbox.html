@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Inbox</title>
+    <meta name="description" content="Your messages and conversations on POPPIN.">
+    <meta property="og:title" content="POPPIN — Inbox">
+    <meta property="og:url" content="https://poppin.garnetgrid.com/inbox.html">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar" id="mainNav"></nav>
+
+    <main class="inbox-page">
+        <div class="inbox-container">
+            <!-- Conversation List -->
+            <aside class="inbox-sidebar" id="inboxSidebar">
+                <div class="inbox-sidebar-header">
+                    <h2>Messages</h2>
+                    <button class="btn-new-dm" id="btnNewDM" title="New Message">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="inbox-search">
+                    <input type="text" placeholder="Search conversations..." id="dmSearch" autocomplete="off">
+                </div>
+                <div class="convo-list" id="convoList">
+                    <!-- Populated by JS -->
+                </div>
+            </aside>
+
+            <!-- Active Thread -->
+            <section class="inbox-thread" id="inboxThread">
+                <div class="thread-empty" id="threadEmpty">
+                    <div class="thread-empty-icon">💬</div>
+                    <h3>Your Messages</h3>
+                    <p>Select a conversation to start chatting</p>
+                </div>
+                <div class="thread-active" id="threadActive" style="display:none">
+                    <div class="thread-header" id="threadHeader">
+                        <button class="btn-back-mobile" id="btnBackMobile">←</button>
+                        <div class="thread-avatar" id="threadAvatar">M</div>
+                        <div class="thread-info">
+                            <h3 id="threadName">Username</h3>
+                            <span class="thread-status" id="threadStatus">Active now</span>
+                        </div>
+                    </div>
+                    <div class="thread-messages" id="threadMessages">
+                        <!-- Messages populated by JS -->
+                    </div>
+                    <div class="thread-input">
+                        <input type="text" placeholder="Type a message..." id="dmInput" autocomplete="off">
+                        <button class="btn-send-dm" id="btnSendDM">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 2L11 13" />
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="site-footer" id="siteFooter"></footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!POPPIN.isLoggedIn()) { window.location.href = 'index.html'; return; }
+
+            let activeConvoId = null;
+
+            function renderConvoList(filter) {
+                const list = document.getElementById('convoList');
+                let convos = PoppinChat.getConversations();
+                if (filter) {
+                    convos = convos.filter(c => c.displayName.toLowerCase().includes(filter.toLowerCase()));
+                }
+                list.innerHTML = convos.map(c => `
+                    <div class="convo-item ${c.id === activeConvoId ? 'active' : ''}" data-id="${c.id}" data-user="${c.username}">
+                        <div class="convo-avatar ${c.unread > 0 ? 'has-unread' : ''}">${c.avatar}</div>
+                        <div class="convo-details">
+                            <div class="convo-name-row">
+                                <span class="convo-name">${c.displayName}</span>
+                                <span class="convo-time">${c.lastTime}</span>
+                            </div>
+                            <p class="convo-preview">${c.lastMessage}</p>
+                        </div>
+                        ${c.unread > 0 ? `<span class="convo-unread">${c.unread}</span>` : ''}
+                    </div>
+                `).join('');
+
+                list.querySelectorAll('.convo-item').forEach(item => {
+                    item.addEventListener('click', () => openThread(item.dataset.id, item.dataset.user));
+                });
+            }
+
+            function openThread(convoId, username) {
+                activeConvoId = convoId;
+                PoppinChat.markConvoRead(convoId);
+                renderConvoList();
+
+                const convos = PoppinChat.getConversations();
+                const convo = convos.find(c => c.id === convoId);
+
+                document.getElementById('threadEmpty').style.display = 'none';
+                document.getElementById('threadActive').style.display = 'flex';
+                document.getElementById('threadAvatar').textContent = convo ? convo.avatar : '?';
+                document.getElementById('threadName').textContent = convo ? convo.displayName : username;
+                document.getElementById('threadStatus').textContent = Math.random() > 0.5 ? 'Active now' : 'Last seen recently';
+
+                document.querySelector('.inbox-container').classList.add('thread-open');
+
+                renderMessages(convoId);
+
+                const msgContainer = document.getElementById('threadMessages');
+                msgContainer.scrollTop = msgContainer.scrollHeight;
+            }
+
+            function renderMessages(convoId) {
+                const msgs = PoppinChat.getDMThread(convoId);
+                const currentUser = POPPIN.getCurrentUser();
+                const container = document.getElementById('threadMessages');
+
+                container.innerHTML = msgs.map(m => {
+                    const isMine = m.sender === currentUser.username;
+                    const time = new Date(m.timestamp);
+                    const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    return `
+                        <div class="dm-message ${isMine ? 'dm-mine' : 'dm-theirs'}">
+                            ${!isMine ? `<div class="dm-avatar">${m.senderAvatar}</div>` : ''}
+                            <div class="dm-bubble">
+                                <p>${m.text}</p>
+                                <span class="dm-time">${timeStr}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            /* Send DM */
+            document.getElementById('btnSendDM').addEventListener('click', sendMessage);
+            document.getElementById('dmInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+
+            function sendMessage() {
+                const input = document.getElementById('dmInput');
+                const text = input.value.trim();
+                if (!text || !activeConvoId) return;
+                const convos = PoppinChat.getConversations();
+                const convo = convos.find(c => c.id === activeConvoId);
+                PoppinChat.sendDM(activeConvoId, convo ? convo.username : '', text);
+                input.value = '';
+                renderMessages(activeConvoId);
+                renderConvoList();
+                const msgContainer = document.getElementById('threadMessages');
+                msgContainer.scrollTop = msgContainer.scrollHeight;
+                /* Simulate typing response after 2-4 seconds */
+                setTimeout(() => simulateReply(activeConvoId), 2000 + Math.random() * 3000);
+            }
+
+            function simulateReply(convoId) {
+                const replies = [
+                    'Bet! See you there 🔥', 'Sounds good!', 'Lol no way 😂',
+                    'Facts', 'I\'m down', 'Yooo that\'s crazy', 'Pull up!',
+                    'What time?', 'Already on the way', 'Say less 💯',
+                    'Aight bet', 'Let\'s goooo', 'W', 'That\'s fire',
+                    'Ngl that sounds lit', 'Omw rn', 'Just got here actually'
+                ];
+                const convos = PoppinChat.getConversations();
+                const convo = convos.find(c => c.id === convoId);
+                if (!convo) return;
+                const msg = {
+                    id: Date.now(),
+                    sender: convo.username,
+                    senderAvatar: convo.avatar,
+                    senderName: convo.displayName,
+                    text: replies[Math.floor(Math.random() * replies.length)],
+                    timestamp: Date.now(),
+                    read: false
+                };
+                const key = `poppin_dm_${convoId}`;
+                const stored = localStorage.getItem(key);
+                const thread = stored ? JSON.parse(stored) : [];
+                thread.push(msg);
+                localStorage.setItem(key, JSON.stringify(thread));
+                if (activeConvoId === convoId) {
+                    renderMessages(convoId);
+                    const msgContainer = document.getElementById('threadMessages');
+                    msgContainer.scrollTop = msgContainer.scrollHeight;
+                }
+            }
+
+            /* Mobile back button */
+            document.getElementById('btnBackMobile').addEventListener('click', () => {
+                document.querySelector('.inbox-container').classList.remove('thread-open');
+                activeConvoId = null;
+                document.getElementById('threadEmpty').style.display = 'flex';
+                document.getElementById('threadActive').style.display = 'none';
+            });
+
+            /* Search filter */
+            document.getElementById('dmSearch').addEventListener('input', (e) => {
+                renderConvoList(e.target.value);
+            });
+
+            /* Handle incoming DMs */
+            window._onNewDM = function (msg) {
+                renderConvoList();
+                if (activeConvoId) renderMessages(activeConvoId);
+            };
+
+            /* Init */
+            renderConvoList();
+        });
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Membership</title>
+    <meta name="description"
+        content="Join POPPIN and unlock Staten Island nightlife. Three tiers: Peek (free), Member, and VIP.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="nav-root"></div>
+
+    <main class="page-content">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:var(--space-3xl)">
+                <h1>Unlock the Night</h1>
+                <p style="color:var(--text-secondary);max-width:500px;margin:var(--space-md) auto">Choose your access
+                    level. See more, do more, experience more of Staten Island nightlife.</p>
+            </div>
+
+            <div class="grid grid-3" style="max-width:1000px;margin:0 auto var(--space-3xl)">
+                <!-- Peek (Free Trial) -->
+                <div class="pricing-card">
+                    <div class="pricing-tier">Peek</div>
+                    <div class="pricing-price"><span class="currency">$</span>0 <span class="period">/ forever</span>
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:var(--space-md)">Get a taste of
+                        what's poppin</p>
+                    <ul class="pricing-features">
+                        <li>View 3 bar feeds per night</li>
+                        <li>See tonight's rankings</li>
+                        <li>Read comments</li>
+                        <li class="disabled">Leave comments</li>
+                        <li class="disabled">Vote for bars</li>
+                        <li class="disabled">RSVP to events</li>
+                        <li class="disabled">Create events</li>
+                        <li class="disabled">Check-in rewards</li>
+                    </ul>
+                    <button class="btn btn-outline btn-block">Current Plan</button>
+                </div>
+
+                <!-- Member -->
+                <div class="pricing-card featured">
+                    <div class="pricing-tier">Member</div>
+                    <div class="pricing-price"><span class="currency">$</span>9<span style="font-size:1.5rem">.99</span>
+                        <span class="period">/ mo</span></div>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:var(--space-md)">Full access to
+                        the nightlife network</p>
+                    <ul class="pricing-features">
+                        <li>Unlimited bar feeds — all 15+ bars</li>
+                        <li>Real-time rankings & voting</li>
+                        <li>Live comments with timestamps</li>
+                        <li>Vote for tonight's hottest bar</li>
+                        <li>RSVP to all events</li>
+                        <li>Create your own events</li>
+                        <li class="disabled">Priority event booking</li>
+                        <li class="disabled">Exclusive VIP specials</li>
+                    </ul>
+                    <button class="btn btn-gold btn-block"
+                        onclick="showToast('Membership activated! Welcome aboard 🎉')">Get Member Access</button>
+                </div>
+
+                <!-- VIP -->
+                <div class="pricing-card">
+                    <div class="pricing-tier">VIP</div>
+                    <div class="pricing-price"><span class="currency">$</span>19<span
+                            style="font-size:1.5rem">.99</span> <span class="period">/ mo</span></div>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:var(--space-md)">The ultimate
+                        nightlife experience</p>
+                    <ul class="pricing-features">
+                        <li>Everything in Member</li>
+                        <li>Priority event booking & early access</li>
+                        <li>Exclusive VIP drink specials at partners</li>
+                        <li>Check-in rewards & badges</li>
+                        <li>VIP profile badge & leaderboard flair</li>
+                        <li>Ad-free experience</li>
+                        <li>Invite-only VIP events</li>
+                        <li>Direct chat with bar owners</li>
+                    </ul>
+                    <button class="btn btn-primary btn-block" onclick="showToast('VIP application submitted! 👑')">Go
+                        VIP</button>
+                </div>
+            </div>
+
+            <!-- Student Discount -->
+            <div style="text-align:center;margin-bottom:var(--space-3xl)">
+                <div class="info-block" style="max-width:500px;margin:0 auto;display:inline-block">
+                    <h4 style="color:var(--gold-primary);margin-bottom:var(--space-sm)">🎓 Student Discount</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary)">College students get 40% off any membership
+                        tier. Verify with your .edu email and you're in.</p>
+                    <button class="btn btn-outline btn-sm" style="margin-top:var(--space-md)"
+                        onclick="showToast('Enter your .edu email to verify')">Verify Student Status</button>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div style="max-width:700px;margin:0 auto">
+                <h2 style="text-align:center;margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do the live camera feeds work?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">We partner with bars across Staten Island who install cameras in
+                            common areas (dance floor, bar area, patio). Feeds are streamed in real-time so you can see
+                            the vibe before you head out. All cameras are clearly visible to patrons — no hidden
+                            surveillance.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I cancel my membership anytime?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Absolutely. No contracts, no commitments. Cancel anytime from your
+                            profile settings. You'll keep access until the end of your billing cycle.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is there an age requirement?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Yes, you must be 21 or older to create a POPPIN account. This is a
+                            platform focused on bar nightlife and responsible drinking.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What bars are currently on POPPIN?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">We currently have 15+ bars across Staten Island, including Kettle
+                            Black, The Coupe, District, Cypress Hall, Flagship Brewing, and more. We're adding new
+                            partners every month.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does voting work?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Members can vote once per bar per night. Votes reset at 6 AM
+                            daily. The bar with the most votes becomes "Tonight's #1" on the dashboard. Overall ratings
+                            are a cumulative average across all nights.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Pricing is accessible without auth (for conversions)
+        const user = POPPIN.getCurrentUser();
+        const navEl = document.getElementById('nav-root');
+        if (user && navEl) navEl.innerHTML = renderNavbar('pricing');
+        const footerEl = document.getElementById('footer-root');
+        if (footerEl) footerEl.innerHTML = renderFooter();
+
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            item.classList.toggle('open');
+        }
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — What's Poppin Tonight</title>
+    <meta name="description"
+        content="See what's happening at bars across Staten Island right now. Live feeds, crowd levels, and tonight's hottest spots.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="nav-root"></div>
+
+    <main class="page-content">
+        <div class="container">
+
+            <!-- Hero Spotlight -->
+            <div id="hero-spotlight"></div>
+
+            <!-- Stats -->
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-num">15</div>
+                    <div class="stat-label">Bars Live</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="totalCheckedIn">0</div>
+                    <div class="stat-label">People Out</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num" id="totalVotes">0</div>
+                    <div class="stat-label">Votes Tonight</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num">8</div>
+                    <div class="stat-label">Events This Week</div>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="section-header">
+                <h2 class="section-title">What's Poppin</h2>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterBars('all', this)">All Bars</button>
+                <button class="filter-btn" onclick="filterBars('lit', this)">🔥 LIT</button>
+                <button class="filter-btn" onclick="filterBars('hype', this)">⚡ HYPE</button>
+                <button class="filter-btn" onclick="filterBars('chill', this)">🥂 Chill</button>
+                <button class="filter-btn" onclick="filterBars('music', this)">🎵 Live Music</button>
+            </div>
+
+            <!-- Bar Grid -->
+            <div class="grid grid-3" id="barGrid"></div>
+
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('dashboard');
+
+        // Hero spotlight — tonight's #1
+        function renderHero() {
+            const top = POPPIN.getTopBarsTonight()[0];
+            document.getElementById('hero-spotlight').innerHTML = `
+        <div class="hero-spotlight">
+          <img src="${top.image}" alt="${top.name}">
+          <div class="overlay"></div>
+          <div class="content">
+            <span class="rank-badge">👑 #1 TONIGHT</span>
+            <h1 style="font-size:2rem; margin-bottom:4px">${top.name}</h1>
+            <p style="color:var(--text-secondary); margin-bottom: var(--space-md)">
+              ${top.vibeEmoji} ${top.vibeLabel} · ⭐ ${top.ratingTonight} · ${top.checkedIn} people here · ${top.votesTonight} votes
+            </p>
+            <a href="bar.html?id=${top.id}" class="btn btn-gold">See What's Poppin →</a>
+          </div>
+        </div>
+      `;
+        }
+
+        // Stats
+        function updateStats() {
+            const totalChecked = POPPIN.bars.reduce((s, b) => s + b.checkedIn, 0);
+            const totalVotes = POPPIN.bars.reduce((s, b) => s + b.votesTonight, 0);
+            document.getElementById('totalCheckedIn').textContent = totalChecked;
+            document.getElementById('totalVotes').textContent = totalVotes;
+        }
+
+        // Bar grid
+        function renderBars(bars) {
+            document.getElementById('barGrid').innerHTML = bars.map(b => renderBarCard(b)).join('');
+        }
+
+        function filterBars(vibe, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderBars(POPPIN.getBarsByVibe(vibe));
+        }
+
+        renderHero();
+        updateStats();
+        renderBars(POPPIN.bars);
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>

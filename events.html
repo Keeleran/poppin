@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Events</title>
+    <meta name="description"
+        content="Find and RSVP to events at bars across Staten Island. DJ nights, comedy shows, tastings, live music and more.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="nav-root"></div>
+
+    <main class="page-content">
+        <div class="container">
+            <div class="section-header">
+                <h1>Upcoming Events</h1>
+                <button class="btn btn-gold" onclick="document.getElementById('createModal').style.display='flex'">+
+                    Create Event</button>
+            </div>
+            <p style="color:var(--text-secondary);margin-bottom:var(--space-xl)">DJ nights, live music, tastings, watch
+                parties, and more across Staten Island.</p>
+
+            <!-- Filters -->
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterEvents('all', this)">All Events</button>
+                <button class="filter-btn" onclick="filterEvents('DJ Night', this)">🎧 DJ Night</button>
+                <button class="filter-btn" onclick="filterEvents('Live Music', this)">🎵 Live Music</button>
+                <button class="filter-btn" onclick="filterEvents('Tasting', this)">🥃 Tastings</button>
+                <button class="filter-btn" onclick="filterEvents('Sports', this)">🏈 Sports</button>
+                <button class="filter-btn" onclick="filterEvents('Karaoke', this)">🎤 Karaoke</button>
+            </div>
+
+            <!-- Events List -->
+            <div id="eventsList" style="display:flex;flex-direction:column;gap:var(--space-md)"></div>
+        </div>
+    </main>
+
+    <!-- Create Event Modal -->
+    <div id="createModal"
+        style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9000;align-items:center;justify-content:center;backdrop-filter:blur(5px)">
+        <div
+            style="background:var(--bg-surface);border:1px solid var(--border-color);border-radius:var(--radius-xl);padding:var(--space-2xl);width:100%;max-width:500px;position:relative">
+            <button onclick="document.getElementById('createModal').style.display='none'"
+                style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer">✕</button>
+            <h3 style="margin-bottom:var(--space-lg)">Create an Event</h3>
+            <form onsubmit="createEvent(event)">
+                <div class="form-group">
+                    <label class="form-label">Event Name</label>
+                    <input type="text" class="form-input" id="evtName" placeholder="e.g. DJ Night: Summer Vibes"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Bar</label>
+                    <select class="form-input" id="evtBar" required>
+                        <option value="">Select a bar...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="date" class="form-input" id="evtDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Time</label>
+                    <input type="text" class="form-input" id="evtTime" placeholder="e.g. 9 PM - 1 AM" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-input" id="evtDesc" rows="3" placeholder="What's this event about?"
+                        required></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold btn-block">Create Event</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="footer-root"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('events');
+
+        // Populate bar dropdown
+        const barSelect = document.getElementById('evtBar');
+        POPPIN.bars.forEach(b => {
+            barSelect.innerHTML += `<option value="${b.id}">${b.name}</option>`;
+        });
+
+        function renderEvents(events) {
+            document.getElementById('eventsList').innerHTML = events.map(ev => renderEventCard(ev)).join('');
+        }
+
+        function filterEvents(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (type === 'all') {
+                renderEvents(POPPIN.events);
+            } else {
+                renderEvents(POPPIN.events.filter(e => e.type === type));
+            }
+        }
+
+        function createEvent(e) {
+            e.preventDefault();
+            const bar = POPPIN.getBar(parseInt(document.getElementById('evtBar').value));
+            const dateVal = document.getElementById('evtDate').value;
+            const d = new Date(dateVal);
+            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+            const user = POPPIN.getCurrentUser();
+
+            const newEvent = {
+                id: Date.now(),
+                title: document.getElementById('evtName').value,
+                barId: bar.id,
+                barName: bar.name,
+                date: dateVal,
+                month: months[d.getMonth()],
+                day: String(d.getDate()),
+                time: document.getElementById('evtTime').value,
+                description: document.getElementById('evtDesc').value,
+                type: 'Social',
+                rsvps: 1,
+                attendees: [user.avatar]
+            };
+
+            POPPIN.events.unshift(newEvent);
+            renderEvents(POPPIN.events);
+            document.getElementById('createModal').style.display = 'none';
+            showToast('Event created! 🎉');
+        }
+
+        renderEvents(POPPIN.events);
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>

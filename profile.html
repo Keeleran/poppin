@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="nav-root"></div>
+
+    <main class="page-content">
+        <div class="container" style="max-width:800px">
+
+            <!-- Profile Header -->
+            <div id="profileHeader"></div>
+
+            <!-- Tabs -->
+            <div class="auth-toggle" style="margin-bottom:var(--space-xl)">
+                <button class="active" id="activityTab" onclick="showTab('activity')">Activity</button>
+                <button id="favoritesTab" onclick="showTab('favorites')">My Bars</button>
+                <button id="settingsTab" onclick="showTab('settings')">Settings</button>
+            </div>
+
+            <!-- Activity Tab -->
+            <div id="activityContent">
+                <div class="section-header">
+                    <h3 class="section-title">Recent Activity</h3>
+                </div>
+                <div id="activityList"></div>
+            </div>
+
+            <!-- Favorites Tab -->
+            <div id="favoritesContent" style="display:none">
+                <div class="section-header">
+                    <h3 class="section-title">My Favorite Bars</h3>
+                </div>
+                <div class="grid grid-2" id="favBars"></div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settingsContent" style="display:none">
+                <div class="info-block" style="margin-bottom:var(--space-lg)">
+                    <h4 style="color:var(--gold-primary);margin-bottom:var(--space-lg)">Account Settings</h4>
+                    <div class="form-group">
+                        <label class="form-label">Display Name</label>
+                        <input type="text" class="form-input" id="settingName" value="">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="settingEmail" value="user@poppin.com">
+                    </div>
+                    <button class="btn btn-primary" onclick="showToast('Settings saved!')">Save Changes</button>
+                </div>
+
+                <div class="info-block" style="margin-bottom:var(--space-lg)">
+                    <h4 style="color:var(--gold-primary);margin-bottom:var(--space-lg)">Notifications</h4>
+                    <div
+                        style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-md)">
+                        <span style="font-size:0.85rem;color:var(--text-secondary)">Event reminders</span>
+                        <label style="position:relative;display:inline-block;width:44px;height:24px">
+                            <input type="checkbox" checked style="opacity:0;width:0;height:0">
+                            <span
+                                style="position:absolute;inset:0;background:var(--purple-primary);border-radius:12px;transition:0.3s;cursor:pointer"></span>
+                        </label>
+                    </div>
+                    <div
+                        style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-md)">
+                        <span style="font-size:0.85rem;color:var(--text-secondary)">New comments at favorited
+                            bars</span>
+                        <label style="position:relative;display:inline-block;width:44px;height:24px">
+                            <input type="checkbox" checked style="opacity:0;width:0;height:0">
+                            <span
+                                style="position:absolute;inset:0;background:var(--purple-primary);border-radius:12px;transition:0.3s;cursor:pointer"></span>
+                        </label>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <span style="font-size:0.85rem;color:var(--text-secondary)">Weekly rankings digest</span>
+                        <label style="position:relative;display:inline-block;width:44px;height:24px">
+                            <input type="checkbox" style="opacity:0;width:0;height:0">
+                            <span
+                                style="position:absolute;inset:0;background:var(--border-color);border-radius:12px;transition:0.3s;cursor:pointer"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <h4 style="color:var(--danger);margin-bottom:var(--space-lg)">Danger Zone</h4>
+                    <button class="btn btn-outline" style="border-color:var(--danger);color:var(--danger)"
+                        onclick="POPPIN.logout()">Sign Out</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('profile');
+        const user = POPPIN.getCurrentUser();
+
+        // Profile Header
+        document.getElementById('profileHeader').innerHTML = `
+      <div class="profile-header">
+        <div class="profile-avatar-large">${user.avatar}</div>
+        <div class="profile-info">
+          <div class="profile-name">${user.displayName}</div>
+          <span class="profile-tier-badge">👑 ${user.tier || 'Member'}</span>
+          <p style="font-size:0.82rem;color:var(--text-muted)">Member since ${user.joined || '2025'}</p>
+        </div>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <div class="num">${user.checkins || 0}</div>
+            <div class="label">Check-ins</div>
+          </div>
+          <div class="profile-stat">
+            <div class="num">${user.comments || 0}</div>
+            <div class="label">Comments</div>
+          </div>
+          <div class="profile-stat">
+            <div class="num">${user.votes || 0}</div>
+            <div class="label">Votes</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+        // Settings name
+        document.getElementById('settingName').value = user.displayName;
+
+        // Activity
+        const activities = [
+            { icon: '🔥', text: `Voted for Kettle Black`, time: '2 hours ago' },
+            { icon: '💬', text: `Commented at The Coupe: "Great vibe tonight"`, time: '3 hours ago' },
+            { icon: '📍', text: `Checked in at Cypress Hall`, time: 'Yesterday' },
+            { icon: '🎉', text: `RSVP'd to DJ Night: Latin Heat`, time: '2 days ago' },
+            { icon: '⭐', text: `Rated Flagship Brewing ⭐⭐⭐⭐⭐`, time: '3 days ago' },
+            { icon: '📍', text: `Checked in at District`, time: 'Last week' },
+            { icon: '💬', text: `Commented at Mother Pug's: "Band was insane!"`, time: 'Last week' },
+        ];
+
+        document.getElementById('activityList').innerHTML = activities.map(a => `
+      <div style="display:flex;gap:var(--space-md);padding:var(--space-md) 0;border-bottom:1px solid rgba(155,89,182,0.1)">
+        <span style="font-size:1.2rem">${a.icon}</span>
+        <div style="flex:1">
+          <div style="font-size:0.85rem;color:var(--text-primary)">${a.text}</div>
+          <div style="font-size:0.72rem;color:var(--text-muted)">${a.time}</div>
+        </div>
+      </div>
+    `).join('');
+
+        // Favorites (sample)
+        const favBars = [POPPIN.bars[0], POPPIN.bars[1], POPPIN.bars[4], POPPIN.bars[5]];
+        document.getElementById('favBars').innerHTML = favBars.map(b => renderBarCard(b)).join('');
+
+        // Tab switching
+        function showTab(tab) {
+            ['activity', 'favorites', 'settings'].forEach(t => {
+                document.getElementById(t + 'Content').style.display = t === tab ? 'block' : 'none';
+                document.getElementById(t + 'Tab').classList.toggle('active', t === tab);
+            });
+        }
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>

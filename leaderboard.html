@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Leaderboard</title>
+    <meta name="description"
+        content="See the hottest bars on Staten Island tonight. Real-time rankings based on votes, check-ins, and crowd energy.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="nav-root"></div>
+
+    <main class="page-content">
+        <div class="container">
+            <h1 style="margin-bottom:var(--space-xs)">🏆 Leaderboard</h1>
+            <p style="color:var(--text-secondary);margin-bottom:var(--space-xl)">Real-time rankings based on votes,
+                check-ins, and crowd energy.</p>
+
+            <!-- Toggle -->
+            <div class="auth-toggle" style="max-width:400px;margin-bottom:var(--space-xl)">
+                <button class="active" id="tonightTab" onclick="showRankings('tonight')">🔥 Tonight</button>
+                <button id="weeklyTab" onclick="showRankings('weekly')">📊 This Week</button>
+                <button id="alltimeTab" onclick="showRankings('alltime')">👑 All Time</button>
+            </div>
+
+            <!-- Top 3 Podium -->
+            <div id="podium"
+                style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-lg);margin-bottom:var(--space-2xl)">
+            </div>
+
+            <!-- Rankings List -->
+            <div id="rankingsList"></div>
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        initPage('leaderboard');
+
+        function showRankings(mode) {
+            document.querySelectorAll('.auth-toggle button').forEach(b => b.classList.remove('active'));
+            document.getElementById(mode === 'tonight' ? 'tonightTab' : mode === 'weekly' ? 'weeklyTab' : 'alltimeTab').classList.add('active');
+
+            let sorted;
+            if (mode === 'tonight') {
+                sorted = POPPIN.getTopBarsTonight();
+            } else if (mode === 'weekly') {
+                sorted = [...POPPIN.bars].sort((a, b) => b.ratingOverall - a.ratingOverall);
+            } else {
+                sorted = [...POPPIN.bars].sort((a, b) => b.ratingOverall - a.ratingOverall);
+            }
+
+            // Podium (top 3)
+            const top3 = sorted.slice(0, 3);
+            document.getElementById('podium').innerHTML = top3.map((bar, i) => {
+                const medals = ['🥇', '🥈', '🥉'];
+                const sizes = ['1.6rem', '1.3rem', '1.1rem'];
+                return `
+          <div class="info-block" style="text-align:center;cursor:pointer;${i === 0 ? 'border-color:var(--gold-primary);box-shadow:var(--shadow-gold)' : ''}" onclick="window.location.href='bar.html?id=${bar.id}'">
+            <div style="font-size:2rem;margin-bottom:var(--space-sm)">${medals[i]}</div>
+            <img src="${bar.image}" style="width:100%;height:120px;object-fit:cover;border-radius:var(--radius-md);margin-bottom:var(--space-sm)" alt="${bar.name}">
+            <div style="font-family:var(--font-display);font-weight:700;font-size:${sizes[i]}">${bar.name}</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:var(--space-xs)">${bar.neighborhood}</div>
+            <div class="rating-badge" style="justify-content:center">⭐ ${mode === 'tonight' ? bar.ratingTonight : bar.ratingOverall}</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px">${bar.votesTonight} votes tonight</div>
+          </div>
+        `;
+            }).join('');
+
+            // Rest of rankings
+            const rest = sorted.slice(3);
+            document.getElementById('rankingsList').innerHTML = rest.map((bar, i) => renderRankRow(bar, i + 3)).join('');
+        }
+
+        showRankings('tonight');
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>
