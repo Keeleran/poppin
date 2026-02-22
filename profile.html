@@ -132,6 +132,7 @@
             <div class="profile-name">${user.displayName}</div>
             <span class="profile-tier-badge">👑 ${user.tier || 'Member'}</span>
             <p style="font-size:0.82rem;color:var(--text-muted); margin-top:4px;">Member since ${user.joined || '2025'}</p>
+            ${user.bio ? `<p style="font-size:0.85rem;color:var(--text-main); margin-top:6px; font-style:italic;">"${user.bio}"</p>` : ''}
           </div>
         </div>
         

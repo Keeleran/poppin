@@ -26,18 +26,20 @@ const POPPIN = {
                         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
                         tier: 'VIP',
                         joined: '2024-06-15',
+			bio: 'Founder & admin. Always on the hunt for the perfect espresso martini.',
                         checkins: 88,
                         comments: 214,
                         votes: 312
                 },
                 {
                         username: 'Cobra',
-                        displayName: 'Cobra',
-                        role: 'member',
-                        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80',
-                        tier: 'Member',
-                        joined: '2025-01-10',
-                        checkins: 34,
+			displayName: 'Cobra',
+			role: 'member',
+			avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80',
+			tier: 'Member',
+			joined: '2025-01-10',
+			bio: 'Egyptian nocturnal explorer. If the vibe is right and the music is loud, you\'ll find me there.',
+			checkins: 34,
                         comments: 67,
                         votes: 145
                 }
