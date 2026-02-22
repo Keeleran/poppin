@@ -136,7 +136,7 @@ function renderNavbar(activePage) {
               </div>
             </div>
           </div>
-          <a href="profile.html" class="nav-avatar" title="${sanitize(user.displayName)}">${sanitize(user.avatar)}</a>
+          <a href="profile.html" class="nav-avatar" title="${sanitize(user.displayName)}">${window.renderAvatar(user.avatar)}</a>
           <button class="btn btn-ghost btn-sm" onclick="POPPIN.logout()" title="Sign Out" aria-label="Sign out">✕</button>
         </div>
           <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation" aria-expanded="false">☰</button>
@@ -321,7 +321,7 @@ function renderBarCard(bar) {
 function renderComment(c) {
   return `
     <div class="comment">
-      <div class="comment-avatar" aria-hidden="true">${sanitize(c.avatar)}</div>
+      <div class="comment-avatar" aria-hidden="true">${window.renderAvatar(c.avatar)}</div>
       <div class="comment-body">
         <div class="comment-header">
           <span class="comment-user">${sanitize(c.user)}</span>

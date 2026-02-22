@@ -1,3 +1,8 @@
+window.renderAvatar = (str) => {
+    if(!str) return '?';
+    return str.startsWith('http') ? `<img src="${str}" alt="avatar" style="width:100%; height:100%; min-width:100%; min-height:100%; border-radius:inherit; object-fit:cover; display:block;">` : str;
+};
+
 /* ============================================
    POPPIN — Data Layer
    Real NYC Bars + Mock Users/Events
@@ -18,7 +23,7 @@ const POPPIN = {
                         username: 'admin',
                         displayName: 'Admin',
                         role: 'admin',
-                        avatar: 'A',
+                        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
                         tier: 'VIP',
                         joined: '2024-06-15',
                         checkins: 88,
@@ -29,7 +34,7 @@ const POPPIN = {
                         username: 'Cobra',
                         displayName: 'Cobra',
                         role: 'member',
-                        avatar: 'C',
+                        avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80',
                         tier: 'Member',
                         joined: '2025-01-10',
                         checkins: 34,
