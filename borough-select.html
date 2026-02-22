@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Choose Your Borough</title>
+    <meta name="description" content="Select your borough to explore real-time NYC nightlife on POPPIN.">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .borough-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+            justify-content: center;
+            gap: var(--space-xl);
+            margin-top: var(--space-2xl);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .borough-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px;
+        }
+
+        .borough-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 184, 0, 0.15);
+        }
+
+        .borough-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: var(--space-sm);
+            z-index: 2;
+        }
+
+        .borough-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .borough-card .emoji-bg {
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.05;
+            bottom: -20px;
+            right: -20px;
+            transition: all 0.5s ease;
+        }
+
+        .borough-card:hover .emoji-bg {
+            opacity: 0.15;
+            transform: scale(1.1);
+        }
+
+        .onboarding-header {
+            text-align: center;
+            padding: var(--space-2xl) 0 0 0;
+            margin-top: 5vh;
+        }
+
+        .onboarding-header .logo {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: -0.04em;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xl);
+        }
+
+        .onboarding-header .logo span {
+            color: var(--gold-primary);
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page-content" style="min-height: 85vh; display: flex; flex-direction: column; padding-bottom: 5vh;">
+        <div class="container" style="flex: 1;">
+            <div class="onboarding-header">
+                <div class="logo">POP<span>PIN</span></div>
+                <h1 style="font-size: 3rem; margin-bottom: var(--space-md);">Where are you poppin' off to?</h1>
+                <p style="color: var(--text-secondary); font-size: 1.2rem;">Select your primary borough to explore
+                    real-time nightlife.</p>
+            </div>
+
+            <div class="borough-grid" id="boroughGrid">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Render footer with GarnetGrid badge
+        const footerEl = document.getElementById('footer-root');
+        if (footerEl) footerEl.outerHTML = renderFooter();
+
+        const boroughData = [
+            { id: 'manhattan', name: 'Manhattan', desc: 'The City That Never Sleeps', emoji: '🏙️' },
+            { id: 'brooklyn', name: 'Brooklyn', desc: 'Vibes, Breweries & Warehouses', emoji: '🌉' },
+            { id: 'queens', name: 'Queens', desc: "The World's Borough", emoji: '👑' },
+            { id: 'bronx', name: 'The Bronx', desc: 'Birthplace of Hip Hop', emoji: '🗽' },
+            { id: 'staten_island', name: 'Staten Island', desc: 'The Forgotten Borough', emoji: '⛴️' }
+        ];
+
+        document.getElementById('boroughGrid').innerHTML = boroughData.map(b => `
+            <div class="borough-card" onclick="selectBorough('${b.id}')">
+                <div class="emoji-bg">${b.emoji}</div>
+                <h3>${b.name}</h3>
+                <p>${b.desc}</p>
+            </div>
+        `).join('');
+
+        function selectBorough(id) {
+            localStorage.setItem('poppin_active_borough', id);
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+    <script src="js/protect.js"></script>
+</body>
+
+</html>

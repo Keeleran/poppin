@@ -52,9 +52,9 @@
             if (mode === 'tonight') {
                 sorted = POPPIN.getTopBarsTonight();
             } else if (mode === 'weekly') {
-                sorted = [...POPPIN.bars].sort((a, b) => b.ratingOverall - a.ratingOverall);
+                sorted = [...POPPIN.getBarsByVibe('all')].sort((a, b) => b.ratingOverall - a.ratingOverall);
             } else {
-                sorted = [...POPPIN.bars].sort((a, b) => b.ratingOverall - a.ratingOverall);
+                sorted = [...POPPIN.getBarsByVibe('all')].sort((a, b) => b.ratingOverall - a.ratingOverall);
             }
 
             // Podium (top 3)

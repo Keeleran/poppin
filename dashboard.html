@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POPPIN — What's Poppin Tonight</title>
     <meta name="description"
-        content="See what's happening at bars across Staten Island right now. Live feeds, crowd levels, and tonight's hottest spots.">
+        content="See what's happening at bars across NYC right now. Live feeds, crowd levels, and tonight's hottest spots.">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -22,7 +22,7 @@
             <!-- Stats -->
             <div class="stat-grid">
                 <div class="stat-box">
-                    <div class="stat-num">15</div>
+                    <div class="stat-num" id="totalBarsLive">0</div>
                     <div class="stat-label">Bars Live</div>
                 </div>
                 <div class="stat-box">
@@ -34,7 +34,7 @@
                     <div class="stat-label">Votes Tonight</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-num">8</div>
+                    <div class="stat-num" id="totalEvents">0</div>
                     <div class="stat-label">Events This Week</div>
                 </div>
             </div>
@@ -87,10 +87,13 @@
 
         // Stats
         function updateStats() {
-            const totalChecked = POPPIN.bars.reduce((s, b) => s + b.checkedIn, 0);
-            const totalVotes = POPPIN.bars.reduce((s, b) => s + b.votesTonight, 0);
+            const activeBars = POPPIN.getBarsByVibe('all');
+            const totalChecked = activeBars.reduce((s, b) => s + b.checkedIn, 0);
+            const totalVotes = activeBars.reduce((s, b) => s + b.votesTonight, 0);
+            document.getElementById('totalBarsLive').textContent = activeBars.length;
             document.getElementById('totalCheckedIn').textContent = totalChecked;
             document.getElementById('totalVotes').textContent = totalVotes;
+            document.getElementById('totalEvents').textContent = POPPIN.getActiveEvents().length;
         }
 
         // Bar grid
@@ -106,7 +109,7 @@
 
         renderHero();
         updateStats();
-        renderBars(POPPIN.bars);
+        renderBars(POPPIN.getBarsByVibe('all'));
     </script>
     <script src="js/protect.js"></script>
 </body>
