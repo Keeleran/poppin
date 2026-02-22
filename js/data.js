@@ -1,6 +1,6 @@
 /* ============================================
    POPPIN — Data Layer
-   Real Staten Island Bars + Mock Users/Events
+   Real NYC Bars + Mock Users/Events
    ============================================ */
 
 const POPPIN = {

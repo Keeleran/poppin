@@ -35,3 +35,5 @@ User-agent: *
 Allow: /
 Disallow: /js/
 Disallow: /css/
+
+Sitemap: https://poppin.garnetgrid.com/sitemap.xml

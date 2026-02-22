@@ -1,5 +1,5 @@
 /* ============================================
-   POPPIN — Staten Island Nightlife Platform
+   POPPIN — NYC Nightlife Platform
    Design System v1.0
    Crown Royal Purple + Gold
    ============================================ */
@@ -1610,7 +1610,11 @@ h4 {
     line-height: 1.6;
 }
 
-/* ---------- Responsive ---------- */
+/* ============================================
+   RESPONSIVE — MOBILE-FIRST OVERHAUL
+   ============================================ */
+
+/* ---------- ≤ 1024px — Tablet ---------- */
 @media (max-width: 1024px) {
     .grid-4 {
         grid-template-columns: repeat(2, 1fr);
@@ -1621,80 +1625,494 @@ h4 {
     }
 }
 
+/* ---------- ≤ 768px — Large Phone / Tablet Portrait ---------- */
 @media (max-width: 768px) {
+
+    /* --- Navbar --- */
     .nav-links {
         display: none;
-    }
-
-    .nav-toggle {
-        display: block;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 280px;
+        background: rgba(14, 5, 24, 0.98);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        padding: calc(var(--nav-height) + var(--space-lg)) var(--space-lg) var(--space-lg);
+        z-index: 999;
+        border-left: 1px solid var(--border-color);
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .nav-links.open {
         display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: var(--nav-height);
-        left: 0;
-        right: 0;
-        background: rgba(14, 5, 24, 0.97);
-        backdrop-filter: blur(20px);
-        border-bottom: 1px solid var(--border-color);
-        padding: var(--space-md);
+        transform: translateX(0);
     }
 
+    .nav-links a {
+        padding: var(--space-md) var(--space-lg);
+        font-size: 1rem;
+        border-radius: var(--radius-md);
+    }
+
+    .nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
+        z-index: 1001;
+    }
+
+    .nav-brand-text {
+        display: none;
+    }
+
+    .borough-selector {
+        margin-left: 8px;
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+
+    /* Mobile nav backdrop */
+    .nav-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+    }
+
+    .nav-backdrop.show {
+        display: block;
+    }
+
+    /* --- Grids --- */
     .grid-2,
     .grid-3,
     .grid-4 {
         grid-template-columns: 1fr;
     }
 
-    .login-page {
+    /* --- Stat Grid --- */
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .stat-box {
+        padding: var(--space-md);
+    }
+
+    .stat-box .stat-num {
+        font-size: 1.5rem;
+    }
+
+    /* --- Hero Spotlight --- */
+    .hero-spotlight {
+        min-height: 200px;
+        border-radius: var(--radius-lg);
+    }
+
+    .hero-spotlight .content {
+        padding: var(--space-lg);
+    }
+
+    .hero-spotlight .content h2 {
+        font-size: 1.4rem;
+    }
+
+    /* --- Filter Pills — Horizontal Scroll --- */
+    .filter-bar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: var(--space-xs);
+        gap: var(--space-sm);
+    }
+
+    .filter-bar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-btn {
+        flex-shrink: 0;
+        white-space: nowrap;
+        min-height: 40px;
+    }
+
+    /* --- Bar Cards --- */
+    .bar-card {
+        border-radius: var(--radius-lg);
+    }
+
+    .bar-card .camera-feed {
+        height: 180px;
+    }
+
+    /* --- Event Cards --- */
+    .event-card {
         flex-direction: column;
+        gap: var(--space-md);
     }
 
-    .login-brand {
-        min-height: 40vh;
-        padding: var(--space-2xl);
+    .event-date-box {
+        flex-direction: row;
+        gap: var(--space-sm);
+        padding: var(--space-sm) var(--space-md);
+        width: fit-content;
     }
 
-    .login-brand .logo {
-        font-size: 2.5rem;
+    .event-meta {
+        flex-wrap: wrap;
+        gap: var(--space-sm);
     }
 
-    .login-form-side {
+    /* --- Leaderboard --- */
+    .rank-row {
+        gap: var(--space-md);
+        padding: var(--space-md);
+    }
+
+    .rank-thumb {
+        width: 40px;
+        height: 40px;
+    }
+
+    .rank-bar-name {
+        font-size: 0.85rem;
+    }
+
+    .rank-score {
+        font-size: 1rem;
+    }
+
+    /* --- Pricing --- */
+    .pricing-card {
         padding: var(--space-xl);
     }
 
+    .pricing-price {
+        font-size: 2.5rem;
+    }
+
+    /* --- Profile --- */
     .profile-header {
         flex-direction: column;
         text-align: center;
+        padding: var(--space-xl);
+    }
+
+    .profile-avatar-large {
+        width: 70px;
+        height: 70px;
+        font-size: 1.6rem;
     }
 
     .profile-stats {
         justify-content: center;
     }
 
-    .event-card {
+    /* --- Login Page --- */
+    .login-page {
         flex-direction: column;
     }
 
-    .hero-spotlight {
-        min-height: 220px;
+    .login-brand {
+        min-height: 35vh;
+        padding: var(--space-2xl) var(--space-lg);
     }
 
-    .hero-spotlight .content {
-        padding: var(--space-lg);
+    .login-brand .logo {
+        font-size: 2.5rem;
+    }
+
+    .login-brand .tagline {
+        font-size: 0.95rem;
+    }
+
+    .login-form-side {
+        padding: var(--space-xl) var(--space-lg);
+    }
+
+    /* --- Footer --- */
+    .footer-inner {
+        grid-template-columns: 1fr;
+        gap: var(--space-xl);
+        text-align: center;
+    }
+
+    .footer-brand p {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .footer-brand {
+        align-items: center;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* --- Section Headers --- */
+    .section-header {
+        flex-wrap: wrap;
+        gap: var(--space-md);
+    }
+
+    .section-header h1 {
+        font-size: 1.6rem;
+    }
+
+    /* --- Inbox --- */
+    .inbox-container {
+        grid-template-columns: 1fr;
+    }
+
+    .inbox-thread {
+        display: none;
+    }
+
+    .inbox-container.thread-open .inbox-sidebar {
+        display: none;
+    }
+
+    .inbox-container.thread-open .inbox-thread {
+        display: flex;
+    }
+
+    .btn-back-mobile {
+        display: block;
+    }
+
+    /* --- Notification Dropdown --- */
+    .notification-dropdown {
+        position: fixed;
+        top: var(--nav-height);
+        right: 0;
+        left: 0;
+        width: 100%;
+        border-radius: 0;
+        max-height: 60vh;
+    }
+
+    .notif-list {
+        max-height: 50vh;
+    }
+
+    /* --- Toast --- */
+    .toast {
+        left: var(--space-md);
+        right: var(--space-md);
+        bottom: var(--space-lg);
+    }
+
+    /* --- Bar Detail (2-col → 1-col) --- */
+    .bar-detail-grid {
+        grid-template-columns: 1fr !important;
     }
 }
 
+/* ---------- ≤ 480px — Small Phone ---------- */
 @media (max-width: 480px) {
     :root {
-        --nav-height: 60px;
+        --nav-height: 56px;
+    }
+
+    /* --- Container tighter --- */
+    .container {
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
+    }
+
+    /* --- Stat Grid compact --- */
+    .stat-box .stat-num {
+        font-size: 1.2rem;
+    }
+
+    .stat-box .stat-label {
+        font-size: 0.62rem;
+    }
+
+    .stat-box {
+        padding: var(--space-sm) var(--space-xs);
+    }
+
+    /* --- Hero ultra-compact --- */
+    .hero-spotlight {
+        min-height: 170px;
+    }
+
+    .hero-spotlight .content {
+        padding: var(--space-md);
+    }
+
+    .hero-spotlight .content h2 {
+        font-size: 1.15rem;
+    }
+
+    /* --- Borough select cards 2-col --- */
+    .borough-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--space-md) !important;
+    }
+
+    .borough-card {
+        min-height: 180px !important;
+        padding: var(--space-lg) !important;
+    }
+
+    .borough-card h3 {
+        font-size: 1.3rem !important;
+    }
+
+    /* --- Bar cards --- */
+    .bar-card .camera-feed {
+        height: 160px;
+    }
+
+    .bar-card .card-body {
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .bar-card .bar-name {
+        font-size: 0.95rem;
+    }
+
+    /* --- Login --- */
+    .login-brand {
+        min-height: 30vh;
+        padding: var(--space-xl) var(--space-md);
     }
 
     .login-brand .features-preview {
         display: none;
+    }
+
+    .login-brand .logo {
+        font-size: 2rem;
+    }
+
+    .login-form-side {
+        padding: var(--space-lg) var(--space-md);
+    }
+
+    .login-form-container h2 {
+        font-size: 1.4rem;
+    }
+
+    /* --- Buttons touch targets --- */
+    .btn,
+    .filter-btn,
+    .faq-question,
+    .chat-tab {
+        min-height: 44px;
+    }
+
+    .btn-xl {
+        padding: 0.9rem 1.8rem;
+        font-size: 0.95rem;
+    }
+
+    /* --- Pricing --- */
+    .pricing-price {
+        font-size: 2rem;
+    }
+
+    .pricing-card {
+        padding: var(--space-lg);
+    }
+
+    /* --- Leaderboard compact --- */
+    .rank-number {
+        font-size: 1rem;
+        min-width: 24px;
+    }
+
+    .rank-thumb {
+        width: 32px;
+        height: 32px;
+    }
+
+    .rank-bar-name {
+        font-size: 0.8rem;
+    }
+
+    .rank-neighborhood {
+        font-size: 0.65rem;
+    }
+
+    .rank-score {
+        font-size: 0.9rem;
+    }
+
+    /* --- Event cards compact --- */
+    .event-title {
+        font-size: 0.92rem;
+    }
+
+    .event-desc {
+        font-size: 0.75rem;
+    }
+
+    /* --- Chat panel --- */
+    .chat-messages {
+        height: 250px;
+    }
+
+    /* --- Legal pages --- */
+    .legal-container {
+        padding: 0 var(--space-md);
+    }
+
+    .legal-title {
+        font-size: 1.6rem;
+    }
+
+    /* --- Profile compact --- */
+    .profile-avatar-large {
+        width: 60px;
+        height: 60px;
+        font-size: 1.3rem;
+    }
+
+    .profile-name {
+        font-size: 1.3rem;
+    }
+
+    .profile-stats {
+        gap: var(--space-lg);
+    }
+
+    .profile-stat .num {
+        font-size: 1.1rem;
+    }
+}
+
+/* ---------- Safe Area Insets (Notch Phones) ---------- */
+@supports (padding: env(safe-area-inset-top)) {
+    .navbar {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    .site-footer {
+        padding-bottom: calc(var(--space-xl) + env(safe-area-inset-bottom));
+    }
+
+    .toast {
+        bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+    }
+
+    .thread-input {
+        padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
     }
 }
 
@@ -2549,17 +2967,7 @@ h4 {
     font-size: 0.8rem;
 }
 
-@media (max-width: 768px) {
-    .nav-brand-text {
-        display: none;
-    }
 
-    .borough-selector {
-        margin-left: 8px;
-        font-size: 0.85rem;
-        padding: 4px 8px;
-    }
-}
 
 .nav-notification-wrapper {
     position: relative;
@@ -2630,37 +3038,4 @@ h4 {
 .notif-content span {
     font-size: 0.65rem;
     color: var(--text-muted);
-}
-
-/* ---------- V2 Responsive Additions ---------- */
-@media (max-width: 768px) {
-    .footer-inner {
-        grid-template-columns: 1fr;
-        gap: var(--space-xl);
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .inbox-container {
-        grid-template-columns: 1fr;
-    }
-
-    .inbox-thread {
-        display: none;
-    }
-
-    .inbox-container.thread-open .inbox-sidebar {
-        display: none;
-    }
-
-    .inbox-container.thread-open .inbox-thread {
-        display: flex;
-    }
-
-    .btn-back-mobile {
-        display: block;
-    }
 }

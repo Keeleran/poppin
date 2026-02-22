@@ -56,7 +56,7 @@ function renderNavbar(activePage) {
           <span class="nav-brand-text">POPPIN</span>
         </a>
         <div class="borough-selector" onclick="toggleBoroughs(event)">
-          📍 ${POPPIN.NYC_BOROUGHS.find(b => b.id === POPPIN.getActiveBorough())?.name || 'Staten Island'} ▾
+          📍 ${POPPIN.NYC_BOROUGHS.find(b => b.id === POPPIN.getActiveBorough())?.name || 'Manhattan'} ▾
           <div class="borough-dropdown" id="boroughDropdown" style="display:none;">
             ${POPPIN.NYC_BOROUGHS.map(b => `
               <div class="borough-item ${b.id === POPPIN.getActiveBorough() ? 'active' : ''}" onclick="POPPIN.setActiveBorough('${b.id}')">
@@ -110,14 +110,44 @@ function renderNavbar(activePage) {
           <a href="profile.html" class="nav-avatar" title="${user.displayName}">${user.avatar}</a>
           <button class="btn btn-ghost btn-sm" onclick="POPPIN.logout()" title="Sign Out">✕</button>
         </div>
-        <button class="nav-toggle" onclick="toggleNav()">☰</button>
+          <button class="nav-toggle" onclick="toggleNav()" aria-label="Toggle navigation">☰</button>
+        </div>
       </div>
+      <div class="nav-backdrop" id="navBackdrop" onclick="closeNav()"></div>
     </nav>
   `;
 }
 
 function toggleNav() {
-  document.getElementById('navLinks').classList.toggle('open');
+  const navLinks = document.getElementById('navLinks');
+  const navToggle = document.querySelector('.nav-toggle');
+  const backdrop = document.getElementById('navBackdrop');
+  const isOpen = navLinks.classList.contains('open');
+
+  if (isOpen) {
+    closeNav();
+  } else {
+    navLinks.classList.add('open');
+    if (backdrop) backdrop.classList.add('show');
+    if (navToggle) navToggle.textContent = '✕';
+    document.body.style.overflow = 'hidden';
+
+    // Close nav when any link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeNav, { once: true });
+    });
+  }
+}
+
+function closeNav() {
+  const navLinks = document.getElementById('navLinks');
+  const navToggle = document.querySelector('.nav-toggle');
+  const backdrop = document.getElementById('navBackdrop');
+
+  if (navLinks) navLinks.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('show');
+  if (navToggle) navToggle.textContent = '☰';
+  document.body.style.overflow = '';
 }
 
 function toggleNotifications(e) {

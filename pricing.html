@@ -5,8 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POPPIN — Membership</title>
-    <meta name="description"
-        content="Join POPPIN and unlock Staten Island nightlife. Three tiers: Peek (free), Member, and VIP.">
+    <meta name="theme-color" content="#1A0A2E">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="POPPIN">
+    <meta property="og:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
+    <meta name="description" content="Join POPPIN and unlock NYC nightlife. Three tiers: Peek (free), Member, and VIP.">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -18,7 +26,7 @@
             <div style="text-align:center;margin-bottom:var(--space-3xl)">
                 <h1>Unlock the Night</h1>
                 <p style="color:var(--text-secondary);max-width:500px;margin:var(--space-md) auto">Choose your access
-                    level. See more, do more, experience more of Staten Island nightlife.</p>
+                    level. See more, do more, experience more of NYC nightlife.</p>
             </div>
 
             <div class="grid grid-3" style="max-width:1000px;margin:0 auto var(--space-3xl)">
@@ -46,7 +54,8 @@
                 <div class="pricing-card featured">
                     <div class="pricing-tier">Member</div>
                     <div class="pricing-price"><span class="currency">$</span>9<span style="font-size:1.5rem">.99</span>
-                        <span class="period">/ mo</span></div>
+                        <span class="period">/ mo</span>
+                    </div>
                     <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:var(--space-md)">Full access to
                         the nightlife network</p>
                     <ul class="pricing-features">
@@ -106,7 +115,7 @@
                         <span class="arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">We partner with bars across Staten Island who install cameras in
+                        <div class="faq-answer-inner">We partner with bars across NYC who install cameras in
                             common areas (dance floor, bar area, patio). Feeds are streamed in real-time so you can see
                             the vibe before you head out. All cameras are clearly visible to patrons — no hidden
                             surveillance.</div>
@@ -137,13 +146,24 @@
 
                 <div class="faq-item">
                     <button class="faq-question" onclick="toggleFaq(this)">
-                        <span>What bars are currently on POPPIN?</span>
+                        <span>Are the cameras live?</span>
                         <span class="arrow">▼</span>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">We currently have 15+ bars across Staten Island, including Kettle
-                            Black, The Coupe, District, Cypress Hall, Flagship Brewing, and more. We're adding new
-                            partners every month.</div>
+                        <div class="faq-answer-inner">Yes! All camera feeds are real-time, low-latency streams so
+                            you can see exactly how packed a venue is right now, not 10 minutes ago.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What bars are on POPPIN?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">We have partnered with 40+ bars across all 5 boroughs of New York
+                            City. From Brooklyn rooftop clubs to cozy West Village haunts and Staten Island staples, our
+                            network is constantly growing.</div>
                     </div>
                 </div>
 
