@@ -1,5 +1,6 @@
 window.renderAvatar = (str) => {
         if (!str) return '?';
+        if (str.trim().startsWith('<svg')) return str;
         return str.startsWith('http') ? `<img src="${str}" alt="avatar" style="width:100%; height:100%; min-width:100%; min-height:100%; border-radius:inherit; object-fit:cover; display:block;">` : str;
 };
 
@@ -23,7 +24,7 @@ const POPPIN = {
                         username: 'admin',
                         displayName: 'Admin',
                         role: 'admin',
-                        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+                        avatar: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; border-radius:inherit; display:block; background:radial-gradient(circle at 50% 50%, #2a0845 0%, #10002b 100%);"><style>@keyframes spin{100%{transform:rotate(360deg);}}@keyframes glow{50%{filter:drop-shadow(0 0 15px #ffd700);}}.star{transform-origin:50px 50px;animation:spin 15s linear infinite,glow 3s ease-in-out infinite;fill:url(#gold);}.core{fill:#fff;filter:drop-shadow(0 0 5px #fff);}</style><defs><linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ff8c00"/></linearGradient></defs><path d="M50 15 L58 42 L85 50 L58 58 L50 85 L42 58 L15 50 L42 42 Z" class="star"/><circle cx="50" cy="50" r="8" class="core"/></svg>`,
                         tier: 'VIP',
                         joined: '2024-06-15',
                         bio: 'Founder & admin. Always on the hunt for the perfect espresso martini.',
@@ -35,7 +36,7 @@ const POPPIN = {
                         username: 'Cobra',
                         displayName: 'Cobra',
                         role: 'member',
-                        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80',
+                        avatar: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; border-radius:inherit; display:block; background:#050505;"><style>@keyframes pulse{0%{filter:drop-shadow(0 0 5px #ff0044); transform:scale(1);}50%{filter:drop-shadow(0 0 12px #ff0044); transform:scale(1.05);}100%{filter:drop-shadow(0 0 5px #ff0044); transform:scale(1);}}.eyes{animation:pulse 2s infinite ease-in-out; fill:#ff0044;}.scales{fill:url(#grad); stroke:#ff0044; stroke-width:1; stroke-dasharray:1,3;}.tongue{animation:flicker 0.4s infinite alternate; transform-origin:50px 55px;}@keyframes flicker{0%{transform:translateY(0) scaleY(1);}100%{transform:translateY(5px) scaleY(1.4);}}</style><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#111"/><stop offset="100%" stop-color="#200"/></linearGradient></defs><path d="M50 15 C15 35, 15 75, 35 95 L65 95 C85 75, 85 35, 50 15 Z" class="scales"/><path d="M50 35 C38 35, 30 45, 42 60 L58 60 C70 45, 62 35, 50 35 Z" fill="#151515" stroke="#ff0044" stroke-width="1.5"/><circle cx="41" cy="46" r="3" class="eyes"/><circle cx="59" cy="46" r="3" class="eyes"/><path d="M48 60 L48 66 L50 60 Z" fill="#fff"/><path d="M52 60 L52 66 L50 60 Z" fill="#fff"/><path d="M50 60 L50 72 L47 77 M50 72 L53 77" stroke="#ff0044" stroke-width="1.5" fill="none" class="tongue"/></svg>`,
                         tier: 'Member',
                         joined: '2025-01-10',
                         bio: 'Egyptian nocturnal explorer. If the vibe is right and the music is loud, you\'ll find me there.',
