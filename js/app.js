@@ -284,8 +284,8 @@ function renderBarCard(bar) {
   const crowdLabel = ['Empty', 'Quiet', 'Moderate', 'Busy', 'Packed'][bar.crowdLevel - 1] || 'Unknown';
   const feedImg = getBarFeedImage(bar);
   const voted = hasVotedFor(bar.id);
-  const promotedTag = bar.premiumListing ? `<div class="promoted-badge" style="position:absolute; top:8px; right:8px; background:var(--accent-primary); color:#000; font-size:0.7rem; font-weight:800; padding:4px 8px; border-radius:4px; z-index:5; text-transform:uppercase; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); border: 1px solid #000;">⭐ Promoted</div>` : '';
-  const viralTag = bar.isViral ? `<div class="viral-badge" style="position:absolute; top:${bar.premiumListing ? '36px' : '8px'}; right:8px; background:linear-gradient(45deg, #ff0055, #ff5500); color:#fff; font-size:0.7rem; font-weight:800; padding:4px 8px; border-radius:4px; z-index:5; text-transform:uppercase; box-shadow: 0 0 12px rgba(255, 85, 0, 0.8); border: 1px solid #fff;">🔥 Trending</div>` : '';
+  const promotedTag = bar.premiumListing ? `<div class="promoted-badge" style="position:absolute; bottom:8px; left:8px; background:var(--accent-primary); color:#000; font-size:0.7rem; font-weight:800; padding:4px 8px; border-radius:4px; z-index:5; text-transform:uppercase; box-shadow: 0 0 10px rgba(57, 255, 20, 0.4); border: 1px solid #000;">⭐ Promoted</div>` : '';
+  const viralTag = bar.isViral ? `<div class="viral-badge" style="position:absolute; bottom:${bar.premiumListing ? '36px' : '8px'}; left:8px; background:linear-gradient(45deg, #ff0055, #ff5500); color:#fff; font-size:0.7rem; font-weight:800; padding:4px 8px; border-radius:4px; z-index:5; text-transform:uppercase; box-shadow: 0 0 12px rgba(255, 85, 0, 0.8); border: 1px solid #fff;">🔥 Trending</div>` : '';
 
   return `
     <div class="card bar-card" onclick="window.location.href='bar.html?id=${bar.id}'" role="link" tabindex="0" aria-label="${sanitize(bar.name)} — ${crowdLabel}, rated ${bar.ratingTonight}">
