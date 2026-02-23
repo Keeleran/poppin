@@ -1,6 +1,6 @@
 window.renderAvatar = (str) => {
-    if(!str) return '?';
-    return str.startsWith('http') ? `<img src="${str}" alt="avatar" style="width:100%; height:100%; min-width:100%; min-height:100%; border-radius:inherit; object-fit:cover; display:block;">` : str;
+        if (!str) return '?';
+        return str.startsWith('http') ? `<img src="${str}" alt="avatar" style="width:100%; height:100%; min-width:100%; min-height:100%; border-radius:inherit; object-fit:cover; display:block;">` : str;
 };
 
 /* ============================================
@@ -26,20 +26,20 @@ const POPPIN = {
                         avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
                         tier: 'VIP',
                         joined: '2024-06-15',
-			bio: 'Founder & admin. Always on the hunt for the perfect espresso martini.',
+                        bio: 'Founder & admin. Always on the hunt for the perfect espresso martini.',
                         checkins: 88,
                         comments: 214,
                         votes: 312
                 },
                 {
                         username: 'Cobra',
-			displayName: 'Cobra',
-			role: 'member',
-			avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80',
-			tier: 'Member',
-			joined: '2025-01-10',
-			bio: 'Egyptian nocturnal explorer. If the vibe is right and the music is loud, you\'ll find me there.',
-			checkins: 34,
+                        displayName: 'Cobra',
+                        role: 'member',
+                        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80',
+                        tier: 'Member',
+                        joined: '2025-01-10',
+                        bio: 'Egyptian nocturnal explorer. If the vibe is right and the music is loud, you\'ll find me there.',
+                        checkins: 34,
                         comments: 67,
                         votes: 145
                 }
@@ -4320,7 +4320,7 @@ const POPPIN = {
                         "vibeEmoji": "⚡",
                         "vibeLabel": "Hype",
                         "specials": "Craft Cocktails $14 · Local Drafts $7",
-                        "image": "https://images.unsplash.com/photo-1575444758702-4a6b9222c016?auto=format&fit=crop&w=800&q=80",
+                        "image": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80",
                         "isLive": true,
                         "checkedIn": 158,
                         "votesTonight": 329,
@@ -4821,7 +4821,7 @@ const POPPIN = {
                         id: 8,
                         borough: 'staten_island',
                         title: 'Marg Madness: Tequila Edition',
-                        barId: 10,
+                        barId: 195,
                         barName: 'Burrito Bar',
                         date: '2026-03-15',
                         month: 'MAR',

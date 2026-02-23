@@ -317,8 +317,8 @@ h4 {
 
 .nav-notification .badge {
     position: absolute;
-    top: -5px;
-    right: -7px;
+    top: -2px;
+    right: -4px;
     width: 16px;
     height: 16px;
     background: var(--live-red);

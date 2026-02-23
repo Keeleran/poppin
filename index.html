@@ -70,12 +70,12 @@
                     changed how we go out. No more guessing if a bar is dead or packed before paying an Uber."</p>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div
-                        style="width: 30px; height: 30px; border-radius: 50%; background: var(--purple-primary); display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">
+                        style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-primary), var(--purple-primary)); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #fff; font-weight: bold;">
                         SAR</div>
-                    <div style="font-size: 0.8rem;">
-                        <span style="font-weight: bold; color: #fff;">Sarah M.</span><br>
+                    <div style="font-size: 0.8rem; display: flex; flex-direction: column; justify-content: center;">
+                        <span style="font-weight: bold; color: #fff; line-height: 1.2;">Sarah M.</span>
                         <span
-                            style="color: var(--gold-primary); font-size: 0.7rem; text-transform: uppercase; font-weight: bold;">VIP
+                            style="color: var(--gold-primary); font-size: 0.7rem; text-transform: uppercase; font-weight: bold; line-height: 1.2;">VIP
                             Member</span>
                     </div>
                 </div>
@@ -177,8 +177,7 @@
         document.addEventListener('DOMContentLoaded', generateCSRFToken);
 
         // Redirect if already logged in
-        const existingUser = localStorage.getItem('poppin_user');
-        if (existingUser) window.location.href = 'dashboard.html';
+        if (POPPIN.getCurrentUser()) window.location.href = 'dashboard.html';
 
         function switchAuth(mode) {
             const isLogin = mode === 'login';

@@ -432,7 +432,7 @@ function renderEventCard(ev) {
   const extra = ev.rsvps - ev.attendees.length;
 
   return `
-    <div class="event-card">
+    <div class="event-card" onclick="window.location.href='bar.html?id=${ev.barId}'" style="cursor:pointer" role="link" tabindex="0">
       <div class="event-date-box" aria-label="${sanitize(ev.month)} ${sanitize(ev.day)}">
         <span class="month">${sanitize(ev.month)}</span>
         <span class="day">${sanitize(ev.day)}</span>
@@ -447,7 +447,7 @@ function renderEventCard(ev) {
             <span>${ev.rsvps} going</span>
           </div>
           <span style="font-size:0.72rem; color:var(--text-muted)">${sanitize(ev.time)}</span>
-          <button class="btn btn-sm btn-outline" onclick="rsvpEvent(${ev.id}, this)" aria-label="RSVP to ${sanitize(ev.title)}">RSVP</button>
+          <button class="btn btn-sm btn-outline" onclick="event.stopPropagation(); rsvpEvent(${ev.id}, this)" aria-label="RSVP to ${sanitize(ev.title)}">RSVP</button>
         </div>
       </div>
     </div>
@@ -458,7 +458,7 @@ function renderEventCard(ev) {
 function renderRankRow(bar, index) {
   const feedImg = getBarFeedImage(bar);
   return `
-    <div class="rank-row">
+    <div class="rank-row" onclick="window.location.href='bar.html?id=${bar.id}'" style="cursor:pointer" role="link" tabindex="0">
       <div class="rank-number">${index + 1}</div>
       <img src="${feedImg}" alt="${sanitize(bar.name)}" class="rank-thumb" loading="lazy">
       <div class="rank-info">

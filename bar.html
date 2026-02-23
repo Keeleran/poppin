@@ -121,7 +121,8 @@
     initPage('dashboard');
 
     const params = new URLSearchParams(window.location.search);
-    const barId = parseInt(params.get('id')) || 1;
+    const fallbackId = POPPIN.getTopBarsTonight()[0]?.id || 195;
+    const barId = parseInt(params.get('id')) || fallbackId;
     const bar = POPPIN.getBar(barId);
     const comments = POPPIN.getCommentsForBar(barId);
     const events = POPPIN.getEventsForBar(barId);
