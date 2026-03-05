@@ -1,0 +1,29 @@
+{
+    "name": "POPPIN — NYC Nightlife",
+    "short_name": "POPPIN",
+    "description": "NYC's live nightlife platform. See who's out. Vote the vibes. Own the night.",
+    "start_url": "/dashboard.html",
+    "display": "standalone",
+    "background_color": "#0E0518",
+    "theme_color": "#1A0A2E",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "img/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "img/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "social",
+        "entertainment",
+        "lifestyle"
+    ]
+}

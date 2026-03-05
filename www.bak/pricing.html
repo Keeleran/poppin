@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POPPIN — Membership</title>
+    <meta name="theme-color" content="#1A0A2E">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="POPPIN">
+    <meta property="og:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://poppin.garnetgrid.com/img/icon-512.png">
+    <meta name="description" content="Join POPPIN and unlock NYC nightlife. Three tiers: Peek (free), Member, and VIP.">
+    <meta property="og:title" content="POPPIN — Membership">
+    <meta property="og:url" content="https://poppin.garnetgrid.com/pricing.html">
+    <link rel="canonical" href="https://poppin.garnetgrid.com/pricing.html">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="nav-root"></div>
+
+    <main class="page-content">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:var(--space-3xl)">
+                <h1>Unlock the Night</h1>
+                <p style="color:var(--text-secondary);max-width:500px;margin:var(--space-md) auto">Choose your access
+                    level. See more, do more, experience more of NYC nightlife.</p>
+            </div>
+
+            <div class="grid grid-3" style="max-width:1000px;margin:0 auto var(--space-3xl)">
+                <!-- Peek (Free Trial) -->
+                <div class="pricing-card">
+                    <div class="pricing-tier">Peek</div>
+                    <div class="pricing-price"><span class="currency">$</span>0 <span class="period">/ forever</span>
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:var(--space-md)">Get a taste of
+                        what's poppin</p>
+                    <ul class="pricing-features">
+                        <li>View 3 bar feeds per night</li>
+                        <li>See tonight's rankings</li>
+                        <li>Read comments</li>
+                        <li class="disabled">Leave comments</li>
+                        <li class="disabled">Vote for bars</li>
+                        <li class="disabled">RSVP to events</li>
+                        <li class="disabled">Create events</li>
+                        <li class="disabled">Check-in rewards</li>
+                    </ul>
+                    <button class="btn btn-outline btn-block">Current Plan</button>
+                </div>
+
+                <!-- Member -->
+                <div class="pricing-card featured">
+                    <div class="pricing-tier">Member</div>
+                    <div class="pricing-price"><span class="currency">$</span>9<span style="font-size:1.5rem">.99</span>
+                        <span class="period">/ mo</span>
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:var(--space-md)">Full access to
+                        the nightlife network</p>
+                    <ul class="pricing-features">
+                        <li>Unlimited bar feeds — all 15+ bars</li>
+                        <li>Real-time rankings & voting</li>
+                        <li>Live comments with timestamps</li>
+                        <li>Vote for tonight's hottest bar</li>
+                        <li>RSVP to all events</li>
+                        <li>Create your own events</li>
+                        <li class="disabled">Priority event booking</li>
+                        <li class="disabled">Exclusive VIP specials</li>
+                    </ul>
+                    <button class="btn btn-gold btn-block"
+                        onclick="showToast('Membership activated! Welcome aboard 🎉')">Get Member Access</button>
+                </div>
+
+                <!-- VIP -->
+                <div class="pricing-card">
+                    <div class="pricing-tier">VIP</div>
+                    <div class="pricing-price"><span class="currency">$</span>19<span
+                            style="font-size:1.5rem">.99</span> <span class="period">/ mo</span></div>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:var(--space-md)">The ultimate
+                        nightlife experience</p>
+                    <ul class="pricing-features">
+                        <li>Everything in Member</li>
+                        <li>Priority event booking & early access</li>
+                        <li>Exclusive VIP drink specials at partners</li>
+                        <li>Check-in rewards & badges</li>
+                        <li>VIP profile badge & leaderboard flair</li>
+                        <li>Ad-free experience</li>
+                        <li>Invite-only VIP events</li>
+                        <li>Direct chat with bar owners</li>
+                    </ul>
+                    <button class="btn btn-primary btn-block" onclick="showToast('VIP application submitted! 👑')">Go
+                        VIP</button>
+                </div>
+            </div>
+
+            <!-- Student Discount -->
+            <div style="text-align:center;margin-bottom:var(--space-3xl)">
+                <div class="info-block" style="max-width:500px;margin:0 auto;display:inline-block">
+                    <h4 style="color:var(--gold-primary);margin-bottom:var(--space-sm)">🎓 Student Discount</h4>
+                    <p style="font-size:0.85rem;color:var(--text-secondary)">College students get 40% off any membership
+                        tier. Verify with your .edu email and you're in.</p>
+                    <button class="btn btn-outline btn-sm" style="margin-top:var(--space-md)"
+                        onclick="showToast('Enter your .edu email to verify')">Verify Student Status</button>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div style="max-width:700px;margin:0 auto">
+                <h2 style="text-align:center;margin-bottom:var(--space-xl)">Frequently Asked Questions</h2>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How do the live camera feeds work?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">We partner with bars across NYC who install cameras in
+                            common areas (dance floor, bar area, patio). Feeds are streamed in real-time so you can see
+                            the vibe before you head out. All cameras are clearly visible to patrons — no hidden
+                            surveillance.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Can I cancel my membership anytime?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Absolutely. No contracts, no commitments. Cancel anytime from your
+                            profile settings. You'll keep access until the end of your billing cycle.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is there an age requirement?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Yes, you must be 21 or older to create a POPPIN account. This is a
+                            platform focused on bar nightlife and responsible drinking.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>Are the cameras live?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Yes! All camera feeds are real-time, low-latency streams so
+                            you can see exactly how packed a venue is right now, not 10 minutes ago.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>What bars are on POPPIN?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">We have partnered with 40+ bars across all 5 boroughs of New York
+                            City. From Brooklyn rooftop clubs to cozy West Village haunts and Staten Island staples, our
+                            network is constantly growing.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFaq(this)">
+                        <span>How does voting work?</span>
+                        <span class="arrow">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">Members can vote once per bar per night. Votes reset at 6 AM
+                            daily. The bar with the most votes becomes "Tonight's #1" on the dashboard. Overall ratings
+                            are a cumulative average across all nights.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer-root"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/membership.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Pricing is accessible without auth (for conversions)
+        const user = POPPIN.getCurrentUser();
+        const navEl = document.getElementById('nav-root');
+        if (user && navEl) navEl.innerHTML = renderNavbar('pricing');
+        const footerEl = document.getElementById('footer-root');
+        if (footerEl) footerEl.innerHTML = renderFooter();
+
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            item.classList.toggle('open');
+        }
+    </script>
+    <script src="js/protect.js"></script>
+
+    <!-- GarnetGrid Product Acknowledgement -->
+    <div style="text-align:center;padding:1.2rem 0 1rem;opacity:0.7;margin-top:auto;">
+        <a href="https://garnetgrid.com" target="_blank" rel="noopener"
+            style="color:#aaa;font-size:0.72rem;text-decoration:none;display:inline-flex;align-items:center;gap:4px"
+            title="Built by GarnetGrid">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14"
+                style="width:14px;height:14px;min-width:14px">
+                <defs>
+                    <linearGradient id="gf1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#9b1b30" />
+                        <stop offset="100%" stop-color="#d4374a" />
+                    </linearGradient>
+                    <linearGradient id="gf2" x1="100%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#e63946" />
+                        <stop offset="100%" stop-color="#7a1525" />
+                    </linearGradient>
+                    <linearGradient id="gf3" x1="50%" y1="0%" x2="50%" y2="100%">
+                        <stop offset="0%" stop-color="#ff6b6b" />
+                        <stop offset="100%" stop-color="#c0392b" />
+                    </linearGradient>
+                </defs>
+                <style>
+                    @keyframes facet-shimmer {
+                        0%, 100% { opacity: 0 }
+                        15% { opacity: .4 }
+                        30% { opacity: 0 }
+                    }
+                    @keyframes gem-rotate {
+                        0%, 100% { transform: rotate(0deg) scale(1) }
+                        25% { transform: rotate(3deg) scale(1.02) }
+                        75% { transform: rotate(-3deg) scale(1.02) }
+                    }
+                    @keyframes sparkle-pop {
+                        0%, 100% { opacity: 0; transform: scale(0) }
+                        50% { opacity: 1; transform: scale(1) }
+                    }
+                    .gem-body { transform-origin: 12px 12px; animation: gem-rotate 4s ease-in-out infinite }
+                    .shimmer-1 { animation: facet-shimmer 3s ease-in-out infinite }
+                    .shimmer-2 { animation: facet-shimmer 3s ease-in-out infinite; animation-delay: 1s }
+                    .shimmer-3 { animation: facet-shimmer 3s ease-in-out infinite; animation-delay: 2s }
+                    .sparkle { transform-origin: center; animation: sparkle-pop 2.5s ease-in-out infinite }
+                    .sparkle:nth-child(2) { animation-delay: .8s }
+                    .sparkle:nth-child(3) { animation-delay: 1.6s }
+                </style>
+                <g class="gem-body">
+                    <polygon points="12,22 4,10 20,10" fill="url(#gf1)" />
+                    <polygon points="4,10 8,3 12,6 12,10" fill="url(#gf2)" />
+                    <polygon points="20,10 16,3 12,6 12,10" fill="url(#gf3)" />
+                    <polygon points="8,3 12,1.5 16,3 12,6" fill="#e63946" />
+                    <polygon points="4,10 12,10 12,22" fill="url(#gf2)" opacity=".7" />
+                    <polygon points="20,10 12,10 12,22" fill="url(#gf1)" opacity=".8" />
+                    <polygon class="shimmer-1" points="4,10 12,10 12,22" fill="white" opacity="0" />
+                    <polygon class="shimmer-2" points="20,10 12,10 12,22" fill="white" opacity="0" />
+                    <polygon class="shimmer-3" points="8,3 12,1.5 16,3 12,6" fill="white" opacity="0" />
+                </g>
+                <g>
+                    <circle class="sparkle" cx="3" cy="5" r=".8" fill="white" opacity="0" />
+                    <circle class="sparkle" cx="21" cy="4" r=".6" fill="white" opacity="0" />
+                    <circle class="sparkle" cx="22" cy="16" r=".7" fill="white" opacity="0" />
+                </g>
+            </svg>
+            Built by GarnetGrid
+        </a>
+    </div>
+</body>
+
+</html>
