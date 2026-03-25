@@ -4,7 +4,7 @@ const path = require('path');
 const dir = __dirname;
 const files = fs.readdirSync(dir).filter(f => f.endsWith('.html'));
 
-const cspMeta = `    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com; connect-src 'self'">`;
+const cspMeta = `    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com https://garnetgrid.com https://poppin.garnetgrid.com https://www.googletagmanager.com; connect-src 'self' https://formspree.io https://www.google-analytics.com https://stats.g.doubleclick.net https://analytics.google.com; form-action 'self' https://formspree.io; connect-src 'self'">`;
 
 files.forEach(file => {
     const filePath = path.join(dir, file);
